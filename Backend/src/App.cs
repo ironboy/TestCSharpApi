@@ -1,14 +1,18 @@
 // Global settings
+using Xunit.Abstractions;
+
 Globals = Obj(new
 {
-    debugOn = true,
+    debugOn = false,
     detailedAclDebug = false,
     aclOn = true,
     isSpa = true,
     port = 3001,
-    serverName = "Ironboy's Minimal API Server",
+    serverName = "Benny's Minimal API Server",
     frontendPath = Path.Combine("..", "Frontend"),
     sessionLifeTimeHours = 2
 });
 
-Server.Start();
+//Server.Start();
+
+//new UtilsTest().TestRemoveMockUsers(); //kör testet
