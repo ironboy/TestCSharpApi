@@ -23,36 +23,15 @@ public class UtilsTest
     [Fact]
     public void TestRemoveBadWords()
     {
-        var read = File.ReadAllText(FilePath("json", "bad-words.json"));
-        Arr badwords = JSON.Parse(read).badwords;
-
+        
         string text = "Hello, how are you, you bum. fuck you please!";
-        string newText = "";
+        string replacement = "bunny";
 
-        string[] singleWord = text.Split(" ");
+        string result = Utils.RemoveBadWords(text, replacement);
 
-        foreach (var word in singleWord)
-        {
-            bool goodWord = true;
-            foreach (var badW in badwords)
-            {
-                if (badW == word)
-                {
-                    goodWord = false;
-                    
-                }
-                Console.WriteLine(word);
+        string expectation = "Hello, how are you, you bum. bunny you please! ";
 
-            }
-            if (goodWord == true)
-            {
-                newText += word + " ";
-            }
-            else
-            {
-                newText += "rabbit ";
-            }
-        }
-        Log(newText);
+        Assert.Equal(expectation, result);
+
     }
 }

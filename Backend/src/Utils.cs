@@ -47,7 +47,6 @@ public static class Utils
         var read = File.ReadAllText(FilePath("json", "bad-words.json"));
         Arr badwords = JSON.Parse(read).badwords;
 
-        text = "Hello, how are you, you bum. fuck you please!";
         string newText = "";
 
         string[] singleWord = text.Split(" ");
