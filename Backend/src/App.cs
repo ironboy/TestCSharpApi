@@ -14,5 +14,3 @@ Globals = Obj(new
 });
 
 //Server.Start();
-
-//new UtilsTest().TestRemoveMockUsers(); //kör testet
