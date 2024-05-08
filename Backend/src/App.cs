@@ -1,16 +1,15 @@
 // Global settings
-using Xunit.Abstractions;
 
 Globals = Obj(new
 {
-    debugOn = false,
+    debugOn = true,
     detailedAclDebug = false,
     aclOn = true,
     isSpa = true,
     port = 3001,
     serverName = "Benny's Minimal API Server",
-    frontendPath = Path.Combine("..", "Frontend"),
+    frontendPath = FilePath("..", "Frontend"),
     sessionLifeTimeHours = 2
 });
 
-//Server.Start();
+Server.Start();
