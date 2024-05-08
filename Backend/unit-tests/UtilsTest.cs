@@ -22,7 +22,6 @@ public class UtilsTest(Xlog Console)
     }
     
 
-
     [Fact]
     // A simple initial example
     public void TestSumInt()
@@ -30,6 +29,7 @@ public class UtilsTest(Xlog Console)
         Assert.Equal(12, Utils.SumInts(7, 5));
         Assert.Equal(-3, Utils.SumInts(6, -9));
     }
+
 
    [Fact]
     public void TestCreateMockUsers()

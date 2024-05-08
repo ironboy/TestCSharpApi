@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "8a61c879-ac49-4ad2-a3ad-0c5118f39097",
+		"_postman_id": "8381348a-01f7-488e-ad68-680ae93abe3a",
 		"name": "Example",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "30881265"
+		"_exporter_id": "34638438"
 	},
 	"item": [
 		{
@@ -51,8 +51,16 @@
 							"      \"description\": \"Färska grönsaker.\"",
 							"    },",
 							"    {",
-							"      \"name\": \"Grönsaker\",",
+							"      \"name\": \"Frukter\",",
 							"      \"description\": \"Färska frukter.\"",
+							"    },",
+							"    {",
+							"      \"name\": \"Kex\",",
+							"      \"description\": \"Kex och flingor.\"",
+							"    },",
+							"    {",
+							"      \"name\": \"Pasta\",",
+							"      \"description\": \"Italianos best choice.\"",
 							"    }",
 							"  ],",
 							"  \"products\": [],",
