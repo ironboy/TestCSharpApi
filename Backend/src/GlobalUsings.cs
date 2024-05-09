@@ -4,6 +4,7 @@ global using System.Text.Json;
 global using Microsoft.AspNetCore.Diagnostics;
 global using Microsoft.Extensions.FileProviders;
 
+
 // Nuget packages
 global using Microsoft.Data.Sqlite;
 global using BCryptNet = BCrypt.Net.BCrypt;
