@@ -4,6 +4,17 @@ public static class Shared
     // A global object to store settings in
     private static Obj _globals = Obj();
 
+    public static string FilePath(params string[] parts)
+{
+    var c = Environment.CurrentDirectory;
+    var i = c.LastIndexOf("Backend");
+    var path = c.Substring(0, i + 7);
+    foreach (var part in parts)
+    {
+        path = Path.Combine(path, part);
+    }
+    return path;
+}
     public static dynamic Globals
     {
         get { return _globals; }
