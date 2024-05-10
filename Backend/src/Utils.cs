@@ -86,7 +86,21 @@ public static class Utils
 
     public static bool IsPasswordGoodEnough(string password)
     {
-        if (password.Length > 7 && password.Any(c => char.IsUpper(c)) && password.Any(c => char.IsLower(c)) && password.Any(c => char.IsDigit(c)) && password.Any(c => !char.IsLetterOrDigit(c)))
+        string passwordPattern = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,}$";
+
+        // Check if the input string matches the password pattern
+        if (Regex.IsMatch(password, passwordPattern))
+        {
+            Console.WriteLine("The password is strong enough.");
+            return true;
+        }
+        else
+        {
+            Console.WriteLine("The password is not strong enough.");
+            return false;
+        }
+    } 
+/*        if (password.Length > 7 && password.Any(c => char.IsUpper(c)) && password.Any(c => char.IsLower(c)) && password.Any(c => char.IsDigit(c)) && password.Any(c => !char.IsLetterOrDigit(c)))
         {
          return true;   
         }
@@ -94,7 +108,7 @@ public static class Utils
         {
         return false;
         }
-    }
+    }*/
 
     public static string[] ParseJsonToArray(string json)
     {
