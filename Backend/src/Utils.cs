@@ -5,7 +5,7 @@ public static class Utils
     {
         return a + b;
     }
-
+/*
     public static Arr CreateMockUsers()
     {
         // Read all mock users from the JSON file
@@ -30,4 +30,21 @@ public static class Utils
         }
         return successFullyWrittenUsers;
     }
+*/
+    public static bool IsPasswordGoodEnough(string password)
+{
+     if (password.Length < 8 || 
+        !password.Any(char.IsLower) || 
+        !password.Any(char.IsUpper) || 
+        !password.Any(char.IsDigit) || 
+        !password.All(char.IsLetterOrDigit))
+
+     {
+        return false;
+    }
+    else
+    {
+        return true;
+    }
+}
 }
