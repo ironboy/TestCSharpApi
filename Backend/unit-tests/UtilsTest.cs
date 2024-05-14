@@ -106,7 +106,23 @@ public class UtilsTest(Xlog Console)
 
     }
 
+    [Fact]
+    public void testCountDomainsFromUserEmails()
+    {
+        //select unique email from DB
+        Arr usersInDb = SQLQuery("SELECT email FROM users");
+        //create array of users based on user.email
+
+        var myObject = Obj();
+
+        var result = Utils.CountDomainsFromUserEmails();
+
+        foreach (var email in usersInDb)
+        {
 
 
+        }
+
+    }
 }
 

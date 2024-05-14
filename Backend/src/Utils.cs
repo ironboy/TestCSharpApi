@@ -97,5 +97,9 @@ public static class Utils
         return successRemovedMockUsers;
     }
 
+    public static Arr Count­Do­mains­FromU­se­rE­mails()
+    {
 
+        return null;
+    }
 }
