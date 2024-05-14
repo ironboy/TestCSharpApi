@@ -75,7 +75,7 @@ public class UtilsTest(Xlog Console)
         Console.WriteLine("The test also asserts that the users added " +
             "are equivalent (the same) to the expected users!");
         Assert.Equivalent(mockUsersNotInDb, result);
-        Console.WriteLine("The test passed!");
+        Console.WriteLine("Mockusers created!");
     }
 
     [Fact]
@@ -100,6 +100,9 @@ public class UtilsTest(Xlog Console)
 
         //show the equivalency of the two
         Assert.Equivalent(mockUsersInDb, result);
+
+        //Print all users without their password!!!!
+        //Console.WriteLine("Mockusers deleted: " + JSON.Stringify(result));
 
     }
 

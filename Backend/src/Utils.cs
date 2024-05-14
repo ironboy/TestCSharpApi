@@ -82,18 +82,20 @@ public static class Utils
         //compare and filter. Only keep emails that exist in mockUser.email (json file)
         Arr mockUsersInDb = mockUsers.Filter(mockUser => emailsInDb.Contains(mockUser.email));
         //{"firstName":"Andreas","lastName":"Syphus","email":"asyphus8@odnoklassniki.ru"},
-
-        foreach (var email in mockUsersInDb)
+        foreach (var user in mockUsersInDb)
         {
-
             var removeUser = SQLQueryOne(
-     @"DELETE FROM users WHERE email = '$email'", email
- //DELETE FROM users WHERE email = 'rstonardrr@wunderground.com';
- );
+     @"DELETE FROM users WHERE email = $email", user);
 
-            successRemovedMockUsers.Push(email);
+            if (!removeUser.HasKey("error"))
+            {
+                user.Delete("password");
+                // The specification says return the user list without password
+                successRemovedMockUsers.Push(user);
+            }
         }
         return successRemovedMockUsers;
     }
+
 
 }
