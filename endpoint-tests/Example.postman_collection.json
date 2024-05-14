@@ -1,19 +1,69 @@
 {
 	"info": {
-		"_postman_id": "2c53d440-20cc-4d7a-933c-803fafd811db",
-		"name": "Example",
+		"_postman_id": "7674f230-20a2-4256-8297-5b905ee014b2",
+		"name": "ACL tests",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "30881265"
+		"_exporter_id": "34875320"
 	},
 	"item": [
 		{
-			"name": "Login as admin",
+			"name": "admin Thomas Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {",
+							"    pm.expect(pm.response.code).to.equal(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response has the required fields\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData).to.have.property('id');",
+							"    pm.expect(responseData).to.have.property('created');",
+							"    pm.expect(responseData).to.have.property('email');",
+							"    pm.expect(responseData).to.have.property('firstName');",
+							"    pm.expect(responseData).to.have.property('lastName');",
+							"    pm.expect(responseData).to.have.property('role');",
+							"});",
+							"",
+							"",
+							"pm.test(\"Email is in a valid format\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData.email).to.be.a('string').and.to.match(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$/);",
+							"});",
+							"",
+							"",
+							"pm.test(\"First name and last name must be non-empty strings\", function () {",
+							"  const responseData = pm.response.json();",
+							"  ",
+							"  pm.expect(responseData).to.be.an('object');",
+							"  pm.expect(responseData.firstName).to.be.a('string').and.to.have.lengthOf.at.least(1, \"First name should not be empty\");",
+							"  pm.expect(responseData.lastName).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Last name should not be empty\");",
+							"});",
+							"",
+							"",
+							"pm.test(\"Role is one of the expected roles\", function () {",
+							"    const expectedRoles = [\"admin\", \"user\"]; // Add more expected roles as needed",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData.role).to.be.oneOf(expectedRoles);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"email\": \"thomas@nodehill.com\",\n    \"password\": \"12345678\"\n}",
+					"raw": "{\r\n    \"email\": \"thomas@nodehill.com\", \"password\": \"12345678\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -39,159 +89,48 @@
 			"response": []
 		},
 		{
-			"name": "Setup all test data",
-			"event": [
-				{
-					"listen": "prerequest",
-					"script": {
-						"exec": [
-							"// Test data to use, pasted from our json file with test data",
-							"let testData = {",
-							"  \"counter\": 0,",
-							"  \"categories\": [",
-							"    {",
-							"      \"name\": \"Grönsaker\",",
-							"      \"description\": \"Färska grönsaker.\"",
-							"    },",
-							"    {",
-							"      \"name\": \"Frukter\",",
-							"      \"description\": \"Färska frukter.\"",
-							"    },",
-							"    {",
-							"      \"name\": \"Rengöringsprodukter\",",
-							"      \"description\": \"Allt du behöver för att hålla hemmet rent.\"",
-							"    }",
-							"  ],",
-							"  \"products\": [",
-							"    {",
-							"      \"name\": \"Gurka\",",
-							"      \"description\": \"Färsk, krispig gurka. Ekologiskt odlad i Bjärred.\",",
-							"      \"price\": 25,",
-							"      \"categoryId\": \"Grönsaker\"",
-							"    }",
-							"  ],",
-							"  \"comments\": [",
-							"    {",
-							"      \"comment\": \"Very nice gurka\",",
-							"      \"productId\": \"Gurka\",",
-							"      \"userId\": 3",
-							"    }",
-							"  ]",
-							"}",
-							"",
-							"// Set the test data as a collection variable",
-							"// (collection variables are available",
-							"//. for all requests in a colleciton)",
-							"pm.collectionVariables.set(\"testData\",testData);"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				},
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"// Not doing any tests here"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://127.0.0.1:3001",
-					"protocol": "http",
-					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
-					],
-					"port": "3001"
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Create categories",
+			"name": "admin adds category",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
 						"exec": [
-							"// Get the test data",
-							"let testData = pm.collectionVariables.get(\"testData\");",
-							"// Get the current category",
-							"let category = testData.categories[testData.counter];",
-							"",
-							"// Read the response",
-							"let response = pm.response;",
-							"// Read the response data",
-							"let responseData = pm.response.json();",
-							"",
-							"// Test that we get a 200 code (ok request) back",
-							"pm.test(\"We should get an ok (code 200) back\",()=> {",
-							"    pm.expect(response.code).to.equal(200);",
+							"pm.test(\"Response status code is 200\", function () {",
+							"    pm.expect(pm.response.code).to.equal(200);",
 							"});",
 							"",
-							"// Test that affected rows equals 1",
-							"pm.test(\"Expect rowsAffected to equal 1\", () => {",
-							"    pm.expect(responseData.rowsAffected).to.equal(1);",
+							"",
+							"pm.test(\"Response has the required fields - command, rowsAffected, and insertId\", function () {",
+							"    const responseData = pm.response.json();",
+							"",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData).to.have.property('command');",
+							"    pm.expect(responseData).to.have.property('rowsAffected');",
+							"    pm.expect(responseData).to.have.property('insertId');",
 							"});",
 							"",
-							"// Test that we get an insert id back",
-							"// also add the id in our test data (for future tests)",
-							"pm.test(\"We should get an insertId back\", () => {",
+							"",
+							"pm.test(\"Command is a non-empty string\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData.command).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Command should not be empty\");",
+							"});",
+							"",
+							"",
+							"pm.test(\"InsertId is a non-negative integer\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
 							"    pm.expect(responseData.insertId).to.be.a('number');",
-							"    // Add the property id to the category with the",
-							"    // id recieved from the REST-api",
-							"    category.id = responseData.insertId;",
-							"    // Log",
-							"    console.log(\"The category has been created\", category);",
+							"    pm.expect(responseData.insertId).to.be.at.least(0);",
 							"});",
 							"",
-							"// Update the counter and save the updated test data",
-							"// (also including the id we set in the second test)",
-							"testData.counter++;",
-							"pm.collectionVariables.set(\"testData\",testData);",
 							"",
-							"// If there are more categories - then \"loop\"",
-							"// through them using setNextRequest",
-							"if(testData.categories[testData.counter]){",
-							"    pm.execution.setNextRequest(\"Create categories\");",
-							"}",
-							"// Otherwise console.log \"All done\"",
-							"else {",
-							"    console.log(\"All categories have been created.\");",
-							"    // IMPORTANT: Set counter to 0 in preparation of next request",
-							"    testData.counter = 0;",
-							"    pm.collectionVariables.set(\"testData\",testData);",
-							"}"
+							"pm.test(\"Content-Type header is application/json\", function () {",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+							"});"
 						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				},
-				{
-					"listen": "prerequest",
-					"script": {
-						"exec": [
-							"// Get the test data",
-							"let testData = pm.collectionVariables.get(\"testData\");",
-							"// Get the current category",
-							"let category = testData.categories[testData.counter];",
-							"",
-							"// pm variables have a scope of one request",
-							"// setting two variables used in the body",
-							"pm.variables.set(\"name\", category.name);",
-							"pm.variables.set(\"description\", category.description);"
-						],
-						"type": "text/javascript",
-						"packages": {}
+						"type": "text/javascript"
 					}
 				}
 			],
@@ -200,7 +139,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"name\": \"{{name}}\",\n    \"description\": \"{{description}}\"\n}",
+					"raw": "{\r\n    \"name\": \"bird toys\", \"description\": \"bird stuff\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -226,378 +165,46 @@
 			"response": []
 		},
 		{
-			"name": "Get categories",
-			"event": [
-				{
-					"listen": "prerequest",
-					"script": {
-						"exec": [
-							"// Get the test data",
-							"let testData = pm.collectionVariables.get(\"testData\");",
-							"// Get the current category",
-							"let category = testData.categories[testData.counter];",
-							"",
-							"// Set a pm variable to id (it is used in the request url)",
-							"pm.variables.set(\"id\", category.id); "
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				},
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"// Get the test data",
-							"let testData = pm.collectionVariables.get(\"testData\");",
-							"// Get the current category",
-							"let category = testData.categories[testData.counter];",
-							"",
-							"// Read the response",
-							"let response = pm.response;",
-							"// Read the response data",
-							"let responseData = pm.response.json();",
-							"",
-							"// Test that we get a 200 code (ok request) back",
-							"pm.test(\"We should get an ok (code 200) back\",()=> {",
-							"    pm.expect(response.code).to.equal(200);",
-							"});",
-							"",
-							"// Test that the REST-api returns the sama data",
-							"// as our test data for the category",
-							"pm.test(\"Test that the correct category data is returned\", ()=> {",
-							"  console.log(\"category\", category);",
-							"  console.log(\"responseData\", responseData);",
-							"  pm.expect(category).to.deep.equal(responseData); ",
-							"});",
-							"",
-							"// Update the counter and save the updated test data",
-							"testData.counter++;",
-							"pm.collectionVariables.set(\"testData\",testData);",
-							"",
-							"// If there are more categories - then \"loop\"",
-							"// through them using setNextRequest",
-							"if(testData.categories[testData.counter]){",
-							"    pm.execution.setNextRequest(\"Get categories\");",
-							"}",
-							"// Otherwise console.log \"All done\"",
-							"else {",
-							"    console.log(\"All categories have been read correctly.\");",
-							"    // IMPORTANT: Set counter to 0 in preparation of next request",
-							"    testData.counter = 0;",
-							"    pm.collectionVariables.set(\"testData\",testData);",
-							"}"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://127.0.0.1:3001/api/categories/{{id}}",
-					"protocol": "http",
-					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
-					],
-					"port": "3001",
-					"path": [
-						"api",
-						"categories",
-						"{{id}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Change categories",
+			"name": "admin adds product",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
 						"exec": [
-							"// Get the test data",
-							"let testData = pm.collectionVariables.get(\"testData\");",
-							"// Get the current category",
-							"let category = testData.categories[testData.counter];",
-							"",
-							"// Read the response",
-							"let response = pm.response;",
-							"// Read the response data",
-							"let responseData = pm.response.json();",
-							"",
-							"// Test that we get a 200 code (ok request) back",
-							"pm.test(\"We should get an ok (code 200) back\",()=> {",
-							"    pm.expect(response.code).to.equal(200);",
+							"pm.test(\"Response status code is 200\", function () {",
+							"    pm.expect(pm.response.code).to.equal(200);",
 							"});",
 							"",
-							"// Test that affected rows equals 1",
-							"pm.test(\"Expect rowsAffected to equal 1\", () => {",
-							"    pm.expect(responseData.rowsAffected).to.equal(1);",
+							"",
+							"pm.test(\"Response has the required fields - command, rowsAffected, and insertId\", function () {",
+							"    const responseData = pm.response.json();",
+							"",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData).to.have.property('command');",
+							"    pm.expect(responseData).to.have.property('rowsAffected');",
+							"    pm.expect(responseData).to.have.property('insertId');",
 							"});",
 							"",
-							"// Update the counter and save the updated test data",
-							"testData.counter++;",
-							"pm.collectionVariables.set(\"testData\",testData);",
 							"",
-							"// If there are more categories - then \"loop\"",
-							"// through them using setNextRequest",
-							"if(testData.categories[testData.counter]){",
-							"    pm.execution.setNextRequest(\"Change categories\");",
-							"}",
-							"// Otherwise console.log \"All done\"",
-							"else {",
-							"    console.log(\"All category-decriptions have been changed.\");",
-							"    // IMPORTANT: Set counter to 0 in preparation of next request",
-							"    testData.counter = 0;",
-							"    pm.collectionVariables.set(\"testData\",testData);",
-							"}"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				},
-				{
-					"listen": "prerequest",
-					"script": {
-						"exec": [
-							"// Get the test data",
-							"let testData = pm.collectionVariables.get(\"testData\");",
-							"// Get the current category",
-							"let category = testData.categories[testData.counter];",
-							"",
-							"// Change the description and save to collectionVariables",
-							"category.description += \" Some extra text in the description.\";",
-							"pm.collectionVariables.set(\"testData\", testData);",
-							"",
-							"// Set a pm variable to id (it is used in the request url)",
-							"pm.variables.set(\"id\", category.id); ",
-							"",
-							"// Set a pm variable to description (it is used in the request body)",
-							"pm.variables.set(\"description\", category.description);"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"description\": \"{{description}}\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://127.0.0.1:3001/api/categories/{{id}}",
-					"protocol": "http",
-					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
-					],
-					"port": "3001",
-					"path": [
-						"api",
-						"categories",
-						"{{id}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Get categories after change",
-			"event": [
-				{
-					"listen": "prerequest",
-					"script": {
-						"exec": [
-							"// Get the test data",
-							"let testData = pm.collectionVariables.get(\"testData\");",
-							"// Get the current category",
-							"let category = testData.categories[testData.counter];",
-							"",
-							"// Set a pm variable to id (it is used in the request url)",
-							"pm.variables.set(\"id\", category.id); "
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				},
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"// Get the test data",
-							"let testData = pm.collectionVariables.get(\"testData\");",
-							"// Get the current category",
-							"let category = testData.categories[testData.counter];",
-							"",
-							"// Read the response",
-							"let response = pm.response;",
-							"// Read the response data",
-							"let responseData = pm.response.json();",
-							"",
-							"// Test that we get a 200 code (ok request) back",
-							"pm.test(\"We should get an ok (code 200) back\",()=> {",
-							"    pm.expect(response.code).to.equal(200);",
+							"pm.test(\"Command is a non-empty string\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData.command).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Command should not be empty\");",
 							"});",
 							"",
-							"// Test that the REST-api returns the sama data",
-							"// as our test data for the category",
-							"pm.test(\"Test that the correct category data is returned\", ()=> {",
-							"  console.log(\"category\", category);",
-							"  console.log(\"responseData\", responseData);",
-							"  pm.expect(category).to.deep.equal(responseData); ",
-							"});",
 							"",
-							"// Update the counter and save the updated test data",
-							"testData.counter++;",
-							"pm.collectionVariables.set(\"testData\",testData);",
-							"",
-							"// If there are more categories - then \"loop\"",
-							"// through them using setNextRequest",
-							"if(testData.categories[testData.counter]){",
-							"    pm.execution.setNextRequest(\"Get categories after change\");",
-							"}",
-							"// Otherwise console.log \"All done\"",
-							"else {",
-							"    console.log(\"All categories have been read correctly after the change.\");",
-							"    // IMPORTANT: Set counter to 0 in preparation of next request",
-							"    testData.counter = 0;",
-							"    pm.collectionVariables.set(\"testData\",testData);",
-							"}"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://127.0.0.1:3001/api/categories/{{id}}",
-					"protocol": "http",
-					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
-					],
-					"port": "3001",
-					"path": [
-						"api",
-						"categories",
-						"{{id}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Create products",
-			"event": [
-				{
-					"listen": "prerequest",
-					"script": {
-						"exec": [
-							"// Get the test data",
-							"let testData = pm.collectionVariables.get(\"testData\");",
-							"",
-							"// Get the current products",
-							"let product = testData.products[testData.counter];",
-							"",
-							"// Replace the category name in the property categoryId",
-							"// with actual id of the category",
-							"",
-							"// Find the correct category",
-							"let categoryWithMatchingName = testData.categories.find(category => {",
-							"    return category.name == product.categoryId",
-							"});",
-							"// Change the categoryId property of the product",
-							"// to the id of the matching category",
-							"product.categoryId = categoryWithMatchingName.id;",
-							"",
-							"// Save changes to our test data (the new value of categoryId)",
-							"pm.collectionVariables.set(\"testData\",testData);",
-							"",
-							"// pm variables have a scope of one request",
-							"// setting four variables used in the body",
-							"pm.variables.set(\"name\", product.name);",
-							"pm.variables.set(\"description\", product.description);",
-							"pm.variables.set(\"price\", product.price);",
-							"pm.variables.set(\"categoryId\", product.categoryId);"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				},
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"// Get the test data",
-							"let testData = pm.collectionVariables.get(\"testData\");",
-							"// Get the current category",
-							"let product = testData.products[testData.counter];",
-							"",
-							"// Read the response",
-							"let response = pm.response;",
-							"// Read the response data",
-							"let responseData = pm.response.json();",
-							"",
-							"// Test that we get a 200 code (ok request) back",
-							"pm.test(\"We should get an ok (code 200) back\",()=> {",
-							"    pm.expect(response.code).to.equal(200);",
-							"});",
-							"",
-							"// Test that affected rows equals 1",
-							"pm.test(\"Expect rowsAffected to equal 1\", () => {",
-							"    pm.expect(responseData.rowsAffected).to.equal(1);",
-							"});",
-							"",
-							"// Test that we get an insert id back",
-							"// also add the id in our test data (for future tests)",
-							"pm.test(\"We should get an insertId back\", () => {",
+							"pm.test(\"InsertId is a non-negative integer\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
 							"    pm.expect(responseData.insertId).to.be.a('number');",
-							"    // Add the property id to the category with the",
-							"    // id recieved from the REST-api",
-							"    product.id = responseData.insertId;",
-							"    // Log",
-							"    console.log(\"The product has been created\", product);",
+							"    pm.expect(responseData.insertId).to.be.at.least(0);",
 							"});",
 							"",
-							"// Update the counter and save the updated test data",
-							"// (also including the id we set in the second test)",
-							"testData.counter++;",
-							"pm.collectionVariables.set(\"testData\",testData);",
 							"",
-							"// If there are more products - then \"loop\"",
-							"// through them using setNextRequest",
-							"if(testData.products[testData.counter]){",
-							"    pm.execution.setNextRequest(\"Create products\");",
-							"}",
-							"// Otherwise console.log \"All done\"",
-							"else {",
-							"    console.log(\"All products have been created.\");",
-							"    // IMPORTANT: Set counter to 0 in preparation of next request",
-							"    testData.counter = 0;",
-							"    pm.collectionVariables.set(\"testData\",testData);",
-							"}"
+							"pm.test(\"Content-Type header is application/json\", function () {",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+							"});"
 						],
 						"type": "text/javascript",
 						"packages": {}
@@ -609,7 +216,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"name\": \"{{name}}\",\n    \"description\": \"{{description}}\",\n    \"price\": {{price}},\n    \"categoryId\": {{categoryId}}\n}",
+					"raw": "{\r\n    \"name\": \"mirror\", \"description\": \"your lonely bird's best friend\", \"price\": \"5\", \"categoryId\": \"11\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -635,75 +242,65 @@
 			"response": []
 		},
 		{
-			"name": "Delete categories",
+			"name": "admin adds comment",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
 						"exec": [
-							"// Get the test data",
-							"let testData = pm.collectionVariables.get(\"testData\");",
-							"// Get the current category",
-							"let category = testData.categories[testData.counter];",
-							"",
-							"// Read the response",
-							"let response = pm.response;",
-							"// Read the response data",
-							"let responseData = pm.response.json();",
-							"",
-							"// Test that we get a 200 code (ok request) back",
-							"pm.test(\"We should get an ok (code 200) back\",()=> {",
-							"    pm.expect(response.code).to.equal(200);",
+							"pm.test(\"Response status code is 200\", function () {",
+							"    pm.expect(pm.response.code).to.equal(200);",
 							"});",
 							"",
-							"// Test that affected rows equals 1",
-							"pm.test(\"Expect rowsAffected to equal 1\", () => {",
-							"    pm.expect(responseData.rowsAffected).to.equal(1);",
+							"",
+							"pm.test(\"Response has the required fields - command, rowsAffected, and insertId\", function () {",
+							"    const responseData = pm.response.json();",
+							"",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData).to.have.property('command');",
+							"    pm.expect(responseData).to.have.property('rowsAffected');",
+							"    pm.expect(responseData).to.have.property('insertId');",
 							"});",
 							"",
-							"// Update the counter and save the updated test data",
-							"testData.counter++;",
-							"pm.collectionVariables.set(\"testData\",testData);",
 							"",
-							"// If there are more categories - then \"loop\"",
-							"// through them using setNextRequest",
-							"if(testData.categories[testData.counter]){",
-							"    pm.execution.setNextRequest(\"Delete categories\");",
-							"}",
-							"// Otherwise console.log \"All done\"",
-							"else {",
-							"    console.log(\"All categories have been deleted correctly.\");",
-							"    // IMPORTANT: Set counter to 0 in preparation of next request",
-							"    testData.counter = 0;",
-							"    pm.collectionVariables.set(\"testData\",testData);",
-							"}"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				},
-				{
-					"listen": "prerequest",
-					"script": {
-						"exec": [
-							"// Get the test data",
-							"let testData = pm.collectionVariables.get(\"testData\");",
-							"// Get the current category",
-							"let category = testData.categories[testData.counter];",
+							"pm.test(\"Command is a non-empty string\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData.command).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Command should not be empty\");",
+							"});",
 							"",
-							"// Set a pm variable to id (it is used in the request url)",
-							"pm.variables.set(\"id\", category.id); "
+							"",
+							"pm.test(\"InsertId is a non-negative integer\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData.insertId).to.be.a('number');",
+							"    pm.expect(responseData.insertId).to.be.at.least(0);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Content-Type header is application/json\", function () {",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+							"});"
 						],
-						"type": "text/javascript",
-						"packages": {}
+						"type": "text/javascript"
 					}
 				}
 			],
 			"request": {
-				"method": "DELETE",
+				"method": "POST",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"bird toys\", \"description\": \"bird stuff\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
 				"url": {
-					"raw": "http://127.0.0.1:3001/api/categories/{{id}}",
+					"raw": "http://127.0.0.1:3001/api/categories",
 					"protocol": "http",
 					"host": [
 						"127",
@@ -714,22 +311,1500 @@
 					"port": "3001",
 					"path": [
 						"api",
-						"categories",
-						"{{id}}"
+						"categories"
 					]
 				}
 			},
 			"response": []
-		}
-	],
-	"variable": [
-		{
-			"key": "data",
-			"value": ""
 		},
 		{
-			"key": "testData",
-			"value": ""
+			"name": "admin reads categories",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {",
+							"    pm.expect(pm.response.code).to.equal(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response has the required fields - id, name, and description\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('array');",
+							"    responseData.forEach(function(category) {",
+							"        pm.expect(category).to.include.all.keys('id', 'name', 'description');",
+							"    });",
+							"});",
+							"",
+							"",
+							"pm.test(\"Name and description are non-empty strings\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('array');",
+							"",
+							"    responseData.forEach(function(category) {",
+							"        pm.expect(category.name).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Name should not be empty\");",
+							"        pm.expect(category.description).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Description should not be empty\");",
+							"    });",
+							"});",
+							"",
+							"",
+							"pm.test(\"Content-Type header is application/json\", function () {",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response is an array with at least one element\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('array').that.is.not.empty;",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:3001/api/categories",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "3001",
+					"path": [
+						"api",
+						"categories"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "admin reads products",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {",
+							"  pm.response.to.have.status(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response has the required fields - id, name, description, price, and categoryId\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('array');",
+							"    ",
+							"    responseData.forEach(function(product) {",
+							"        pm.expect(product).to.include.all.keys('id', 'name', 'description', 'price', 'categoryId');",
+							"    });",
+							"});",
+							"",
+							"",
+							"pm.test(\"Price is a non-negative number\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('array');",
+							"    responseData.forEach(function(product) {",
+							"        pm.expect(product.price).to.be.a('number').and.to.be.at.least(0);",
+							"    });",
+							"});",
+							"",
+							"",
+							"pm.test(\"Name and description must be non-empty strings\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('array');",
+							"    ",
+							"    responseData.forEach(function(product) {",
+							"        pm.expect(product.name).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Name should not be empty\");",
+							"        pm.expect(product.description).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Description should not be empty\");",
+							"    });",
+							"});",
+							"",
+							"",
+							"pm.test(\"Id and categoryId should be non-negative integers\", function () {",
+							"  const responseData = pm.response.json();",
+							"  ",
+							"  pm.expect(responseData).to.be.an('array');",
+							"  responseData.forEach(function(product) {",
+							"    pm.expect(product.id).to.be.a('number').and.to.be.at.least(0);",
+							"    pm.expect(product.categoryId).to.be.a('number').and.to.be.at.least(0);",
+							"  });",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:3001/api/products",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "3001",
+					"path": [
+						"api",
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "admin reads comments",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response has the required fields\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('array');",
+							"    responseData.forEach(function(comment) {",
+							"        pm.expect(comment).to.have.property('id');",
+							"        pm.expect(comment).to.have.property('comment');",
+							"        pm.expect(comment).to.have.property('userId');",
+							"        pm.expect(comment).to.have.property('productId');",
+							"    });",
+							"});",
+							"",
+							"",
+							"pm.test(\"Comment is a non-empty string\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('array');",
+							"    responseData.forEach(function(commentData) {",
+							"        pm.expect(commentData.comment).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Comment should not be empty\");",
+							"    });",
+							"});",
+							"",
+							"",
+							"pm.test(\"UserId and ProductId are non-negative integers\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('array');",
+							"    responseData.forEach(comment => {",
+							"        pm.expect(comment.userId).to.be.a('number').and.to.be.at.least(0);",
+							"        pm.expect(comment.productId).to.be.a('number').and.to.be.at.least(0);",
+							"    });",
+							"});",
+							"",
+							"",
+							"pm.test(\"Verify Content-Type is application/json\", function () {",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:3001/api/comments",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "3001",
+					"path": [
+						"api",
+						"comments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "admin reads users",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response has the required fields - id, created, email, firstName, lastName, and role\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('array');",
+							"    responseData.forEach(user => {",
+							"        pm.expect(user).to.have.property('id');",
+							"        pm.expect(user).to.have.property('created');",
+							"        pm.expect(user).to.have.property('email');",
+							"        pm.expect(user).to.have.property('firstName');",
+							"        pm.expect(user).to.have.property('lastName');",
+							"        pm.expect(user).to.have.property('role');",
+							"    });",
+							"});",
+							"",
+							"",
+							"pm.test(\"Email is in a valid format\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('array');",
+							"    responseData.forEach(function(user) {",
+							"        pm.expect(user.email).to.be.a('string').and.to.match(/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/);",
+							"    });",
+							"});",
+							"",
+							"",
+							"pm.test(\"Created date is in a valid date format\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('array');",
+							"    responseData.forEach(function(user) {",
+							"        pm.expect(user.created).to.match(/^\\d{4}-\\d{2}-\\d{2}$/);",
+							"    });",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response content type is application/json\", function () {",
+							"  pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:3001/api/users",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "3001",
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Logout Thomas",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {",
+							"    pm.expect(pm.response.code).to.equal(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response has the required fields\", function () {",
+							"    const responseData = pm.response.json();",
+							"",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData.status).to.exist;",
+							"});",
+							"",
+							"",
+							"pm.test(\"Content-Type is application/json\", function () {",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+							"});",
+							"",
+							"",
+							"pm.test(\"Status field should not be empty\", function () {",
+							"  const responseData = pm.response.json();",
+							"  ",
+							"  pm.expect(responseData).to.be.an('object');",
+							"  pm.expect(responseData.status).to.exist.and.to.not.be.empty;",
+							"});",
+							"",
+							"",
+							"pm.test(\"Verify that the status field is a string\", function () {",
+							"    const responseData = pm.response.json();",
+							"",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData.status).to.be.a('string');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"thomas@nodehill.com\", \"password\": \"12345678\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:3001/api/login",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "3001",
+					"path": [
+						"api",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "visitor reads categories",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {",
+							"    pm.expect(pm.response.code).to.equal(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response has the required fields - id, name, and description\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('array');",
+							"    responseData.forEach(function(item) {",
+							"        pm.expect(item).to.have.property('id');",
+							"        pm.expect(item).to.have.property('name');",
+							"        pm.expect(item).to.have.property('description');",
+							"    });",
+							"});",
+							"",
+							"",
+							"pm.test(\"Name and description must be non-empty strings\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    responseData.forEach(function(category) {",
+							"        pm.expect(category.name).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Name should not be empty\");",
+							"        pm.expect(category.description).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Description should not be empty\");",
+							"    });",
+							"});",
+							"",
+							"",
+							"pm.test(\"Content-Type header is application/json\", function () {",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response is an array with at least one element\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('array').that.is.not.empty;",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:3001/api/categories",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "3001",
+					"path": [
+						"api",
+						"categories"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "visitor reads products",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response has the required fields - id, name, description, price, and categoryId\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('array');",
+							"    responseData.forEach(function(product) {",
+							"        pm.expect(product).to.have.property('id');",
+							"        pm.expect(product).to.have.property('name');",
+							"        pm.expect(product).to.have.property('description');",
+							"        pm.expect(product).to.have.property('price');",
+							"        pm.expect(product).to.have.property('categoryId');",
+							"    });",
+							"});",
+							"",
+							"",
+							"pm.test(\"Price is a non-negative number\", function () {",
+							"  const responseData = pm.response.json();",
+							"  ",
+							"  responseData.forEach(function(product) {",
+							"    pm.expect(product.price).to.be.a('number').and.to.be.at.least(0);",
+							"  });",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response is in JSON format\", function () {",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+							"});",
+							"",
+							"",
+							"pm.test(\"Id is a non-negative integer\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('array');",
+							"    responseData.forEach(function(product) {",
+							"        pm.expect(product.id).to.be.a('number').and.to.be.at.least(0);",
+							"    });",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:3001/api/products",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "3001",
+					"path": [
+						"api",
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "visitor reads comments",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {",
+							"    pm.expect(pm.response.code).to.equal(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response has the required fields - id, comment, userId, and productId\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('array');",
+							"    responseData.forEach(function(comment) {",
+							"        pm.expect(comment).to.have.property('id');",
+							"        pm.expect(comment).to.have.property('comment');",
+							"        pm.expect(comment).to.have.property('userId');",
+							"        pm.expect(comment).to.have.property('productId');",
+							"    });",
+							"});",
+							"",
+							"",
+							"pm.test(\"Id should be a non-negative integer\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('array');",
+							"    responseData.forEach(function(comment) {",
+							"        pm.expect(comment.id).to.be.a('number').and.to.be.at.least(0);",
+							"    });",
+							"});",
+							"",
+							"",
+							"pm.test(\"Comment is a non-empty string\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('array');",
+							"    ",
+							"    responseData.forEach(function(commentObj) {",
+							"        pm.expect(commentObj.comment).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Comment should not be empty\");",
+							"    });",
+							"});",
+							"",
+							"",
+							"pm.test(\"UserId and ProductId are non-negative integers\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('array');",
+							"    responseData.forEach(function(comment) {",
+							"        pm.expect(comment.userId).to.be.a('number').and.to.be.at.least(0);",
+							"        pm.expect(comment.productId).to.be.a('number').and.to.be.at.least(0);",
+							"    });",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:3001/api/comments",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "3001",
+					"path": [
+						"api",
+						"comments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "visitor tries to read users",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 405\", function () {",
+							"    pm.expect(pm.response.code).to.equal(405);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response has the required Content-Type header with value 'application/json'\", function () {",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+							"});",
+							"",
+							"",
+							"pm.test(\"Error message is present in the response\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData.error).to.exist;",
+							"});",
+							"",
+							"",
+							"pm.test(\"Error message is a non-empty string\", function () {",
+							"  const responseData = pm.response.json();",
+							"  ",
+							"  pm.expect(responseData.error).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Error message should not be empty\");",
+							"});",
+							"",
+							"",
+							"pm.test(\"Verify response does not contain sensitive information\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData.error).to.not.exist;",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:3001/api/users",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "3001",
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "visitor tries to add category",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {",
+							"    pm.expect(pm.response.code).to.equal(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response has the required fields - command, rowsAffected, and insertId\", function () {",
+							"    const responseData = pm.response.json();",
+							"",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData).to.have.property('command');",
+							"    pm.expect(responseData).to.have.property('rowsAffected');",
+							"    pm.expect(responseData).to.have.property('insertId');",
+							"});",
+							"",
+							"",
+							"pm.test(\"Command is a non-empty string\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData.command).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Command should not be empty\");",
+							"});",
+							"",
+							"",
+							"pm.test(\"InsertId is a non-negative integer\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData.insertId).to.be.a('number');",
+							"    pm.expect(responseData.insertId).to.be.at.least(0);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Content-Type header is application/json\", function () {",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"bird toys\", \"description\": \"bird stuff\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:3001/api/categories",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "3001",
+					"path": [
+						"api",
+						"categories"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "visitor tries to add product",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {",
+							"    pm.expect(pm.response.code).to.equal(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response has the required fields - command, rowsAffected, and insertId\", function () {",
+							"    const responseData = pm.response.json();",
+							"",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData).to.have.property('command');",
+							"    pm.expect(responseData).to.have.property('rowsAffected');",
+							"    pm.expect(responseData).to.have.property('insertId');",
+							"});",
+							"",
+							"",
+							"pm.test(\"Command is a non-empty string\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData.command).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Command should not be empty\");",
+							"});",
+							"",
+							"",
+							"pm.test(\"InsertId is a non-negative integer\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData.insertId).to.be.a('number');",
+							"    pm.expect(responseData.insertId).to.be.at.least(0);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Content-Type header is application/json\", function () {",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"mirror\", \"description\": \"your lonely bird's best friend\", \"price\": \"5\", \"categoryId\": \"11\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:3001/api/products",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "3001",
+					"path": [
+						"api",
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "visitor tries to add comment",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {",
+							"    pm.expect(pm.response.code).to.equal(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response has the required fields - command, rowsAffected, and insertId\", function () {",
+							"    const responseData = pm.response.json();",
+							"",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData).to.have.property('command');",
+							"    pm.expect(responseData).to.have.property('rowsAffected');",
+							"    pm.expect(responseData).to.have.property('insertId');",
+							"});",
+							"",
+							"",
+							"pm.test(\"Command is a non-empty string\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData.command).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Command should not be empty\");",
+							"});",
+							"",
+							"",
+							"pm.test(\"InsertId is a non-negative integer\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData.insertId).to.be.a('number');",
+							"    pm.expect(responseData.insertId).to.be.at.least(0);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Content-Type header is application/json\", function () {",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"bird toys\", \"description\": \"bird stuff\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:3001/api/categories",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "3001",
+					"path": [
+						"api",
+						"categories"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {",
+							"    pm.expect(pm.response.code).to.equal(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response has the required fields\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData).to.have.property('id');",
+							"    pm.expect(responseData).to.have.property('created');",
+							"    pm.expect(responseData).to.have.property('email');",
+							"    pm.expect(responseData).to.have.property('firstName');",
+							"    pm.expect(responseData).to.have.property('lastName');",
+							"    pm.expect(responseData).to.have.property('role');",
+							"});",
+							"",
+							"",
+							"pm.test(\"Email is in a valid format\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData.email).to.be.a('string').and.to.match(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$/);",
+							"});",
+							"",
+							"",
+							"pm.test(\"First name and last name must be non-empty strings\", function () {",
+							"  const responseData = pm.response.json();",
+							"  ",
+							"  pm.expect(responseData).to.be.an('object');",
+							"  pm.expect(responseData.firstName).to.be.a('string').and.to.have.lengthOf.at.least(1, \"First name should not be empty\");",
+							"  pm.expect(responseData.lastName).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Last name should not be empty\");",
+							"});",
+							"",
+							"",
+							"pm.test(\"Role is one of the expected roles\", function () {",
+							"    const expectedRoles = [\"admin\", \"user\"]; // Add more expected roles as needed",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData.role).to.be.oneOf(expectedRoles);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"maria@nodehill.com\", \"password\": \"12345678\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:3001/api/login",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "3001",
+					"path": [
+						"api",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user tries to add category",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {",
+							"    pm.expect(pm.response.code).to.equal(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response has the required fields - command, rowsAffected, and insertId\", function () {",
+							"    const responseData = pm.response.json();",
+							"",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData).to.have.property('command');",
+							"    pm.expect(responseData).to.have.property('rowsAffected');",
+							"    pm.expect(responseData).to.have.property('insertId');",
+							"});",
+							"",
+							"",
+							"pm.test(\"Command is a non-empty string\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData.command).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Command should not be empty\");",
+							"});",
+							"",
+							"",
+							"pm.test(\"InsertId is a non-negative integer\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData.insertId).to.be.a('number');",
+							"    pm.expect(responseData.insertId).to.be.at.least(0);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Content-Type header is application/json\", function () {",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"bird toys\", \"description\": \"bird stuff\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:3001/api/categories",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "3001",
+					"path": [
+						"api",
+						"categories"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user tries to add product",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {",
+							"    pm.expect(pm.response.code).to.equal(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response has the required fields - command, rowsAffected, and insertId\", function () {",
+							"    const responseData = pm.response.json();",
+							"",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData).to.have.property('command');",
+							"    pm.expect(responseData).to.have.property('rowsAffected');",
+							"    pm.expect(responseData).to.have.property('insertId');",
+							"});",
+							"",
+							"",
+							"pm.test(\"Command is a non-empty string\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData.command).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Command should not be empty\");",
+							"});",
+							"",
+							"",
+							"pm.test(\"InsertId is a non-negative integer\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData.insertId).to.be.a('number');",
+							"    pm.expect(responseData.insertId).to.be.at.least(0);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Content-Type header is application/json\", function () {",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"mirror\", \"description\": \"your lonely bird's best friend\", \"price\": \"5\", \"categoryId\": \"11\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:3001/api/products",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "3001",
+					"path": [
+						"api",
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user reads categories",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {",
+							"    pm.expect(pm.response.code).to.equal(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response has the required fields - id, name, and description\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('array');",
+							"    responseData.forEach(function(category) {",
+							"        pm.expect(category).to.include.all.keys('id', 'name', 'description');",
+							"    });",
+							"});",
+							"",
+							"",
+							"pm.test(\"Name and description are non-empty strings\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('array');",
+							"",
+							"    responseData.forEach(function(category) {",
+							"        pm.expect(category.name).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Name should not be empty\");",
+							"        pm.expect(category.description).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Description should not be empty\");",
+							"    });",
+							"});",
+							"",
+							"",
+							"pm.test(\"Content-Type header is application/json\", function () {",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response is an array with at least one element\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('array').that.is.not.empty;",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:3001/api/categories",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "3001",
+					"path": [
+						"api",
+						"categories"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user reads products",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {",
+							"    pm.expect(pm.response.code).to.equal(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response has the required fields\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('array');",
+							"    responseData.forEach(function(product) {",
+							"        pm.expect(product).to.have.property('id');",
+							"        pm.expect(product).to.have.property('name');",
+							"        pm.expect(product).to.have.property('description');",
+							"        pm.expect(product).to.have.property('price');",
+							"        pm.expect(product).to.have.property('categoryId');",
+							"    });",
+							"});",
+							"",
+							"",
+							"pm.test(\"Price is a non-negative number\", function () {",
+							"  const responseData = pm.response.json();",
+							"  ",
+							"  responseData.forEach(function(product) {",
+							"    pm.expect(product.price).to.be.a('number').and.to.be.at.least(0);",
+							"  });",
+							"});",
+							"",
+							"",
+							"pm.test(\"Content-Type is application/json\", function () {",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+							"});",
+							"",
+							"",
+							"pm.test(\"Id is a non-negative integer\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('array');",
+							"    responseData.forEach(function(product) {",
+							"        pm.expect(product.id).to.be.a('number');",
+							"        pm.expect(product.id).to.be.at.least(0);",
+							"    });",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:3001/api/products",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "3001",
+					"path": [
+						"api",
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user reads comments",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {",
+							"  pm.expect(pm.response.code).to.equal(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response content type is application/json\", function () {",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+							"});",
+							"",
+							"",
+							"pm.test(\"Validate the structure of the comment object\", function () {",
+							"  const responseData = pm.response.json();",
+							"  ",
+							"  pm.expect(responseData).to.be.an('array');",
+							"  responseData.forEach(function(comment) {",
+							"    pm.expect(comment).to.be.an('object');",
+							"    pm.expect(comment).to.have.property('id');",
+							"    pm.expect(comment).to.have.property('comment');",
+							"    pm.expect(comment).to.have.property('userId');",
+							"    pm.expect(comment).to.have.property('productId');",
+							"  });",
+							"});",
+							"",
+							"",
+							"pm.test(\"Ensure the id, comment, userId, and productId fields are present in the response\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('array');",
+							"    responseData.forEach(function(comment) {",
+							"        pm.expect(comment).to.have.property('id');",
+							"        pm.expect(comment).to.have.property('comment');",
+							"        pm.expect(comment).to.have.property('userId');",
+							"        pm.expect(comment).to.have.property('productId');",
+							"    });",
+							"});",
+							"",
+							"",
+							"pm.test(\"Id, userId, and productId are non-negative integers\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('array');",
+							"    responseData.forEach(function(comment) {",
+							"        pm.expect(comment.id).to.be.a('number').and.to.be.at.least(0);",
+							"        pm.expect(comment.userId).to.be.a('number').and.to.be.at.least(0);",
+							"        pm.expect(comment.productId).to.be.a('number').and.to.be.at.least(0);",
+							"    });",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:3001/api/comments",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "3001",
+					"path": [
+						"api",
+						"comments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user tries to read users",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 405\", function () {",
+							"  pm.expect(pm.response.code).to.equal(405);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response has the required Content-Type header with value application/json\", function () {",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+							"});",
+							"",
+							"",
+							"pm.test(\"Error message is present in the response\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData.error).to.exist.and.to.be.a('string');",
+							"});",
+							"",
+							"",
+							"pm.test(\"Error message is a non-empty string\", function () {",
+							"  const responseData = pm.response.json();",
+							"  ",
+							"  pm.expect(responseData.error).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Error message should not be empty\");",
+							"});",
+							"",
+							"",
+							"pm.test(\"Verify that the response does not contain any sensitive information\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.not.have.any.keys('password', 'creditCardNumber', 'ssn', 'securityCode');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:3001/api/users",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "3001",
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User Logout",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {",
+							"    pm.expect(pm.response.code).to.equal(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response has the required fields\", function () {",
+							"    const responseData = pm.response.json();",
+							"",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData.status).to.exist;",
+							"});",
+							"",
+							"",
+							"pm.test(\"Content-Type is application/json\", function () {",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+							"});",
+							"",
+							"",
+							"pm.test(\"Status field should not be empty\", function () {",
+							"  const responseData = pm.response.json();",
+							"  ",
+							"  pm.expect(responseData).to.be.an('object');",
+							"  pm.expect(responseData.status).to.exist.and.to.not.be.empty;",
+							"});",
+							"",
+							"",
+							"pm.test(\"Verify that the status field is a string\", function () {",
+							"    const responseData = pm.response.json();",
+							"",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData.status).to.be.a('string');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"thomas@nodehill.com\", \"password\": \"12345678\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:3001/api/login",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "3001",
+					"path": [
+						"api",
+						"login"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }
