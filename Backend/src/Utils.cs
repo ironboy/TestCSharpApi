@@ -83,10 +83,9 @@ public static class Utils
         Arr mockUsersInDb = mockUsers.Filter(mockUser => emailsInDb.Contains(mockUser.email));
         //{"firstName":"Andreas","lastName":"Syphus","email":"asyphus8@odnoklassniki.ru"},
 
-        Arr mockuserEmail = mockUsersInDb.Map(mockuser => mockuser.email);
-
-        foreach (var email in mockuserEmail)
+        foreach (var email in mockUsersInDb)
         {
+
             var removeUser = SQLQueryOne(
      @"DELETE FROM users WHERE email = '$email'", email
  //DELETE FROM users WHERE email = 'rstonardrr@wunderground.com';

@@ -94,6 +94,7 @@ public class UtilsTest(Xlog Console)
         //compare and filter. Only keep emails that exist in mockUser.email (json file)
         Arr mockUsersInDb = mockUsers.Filter(mockUser => emailsInDb.Contains(mockUser.email));
 
+        Arr mockUserEmail = mockUsersInDb.Map(user => user.email);
         //get result from our program
         var result = Utils.RemoveMockUsers();
 
