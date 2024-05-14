@@ -52,6 +52,21 @@
       "comment": "Bananen smakade bra!",
       "userId": 3,
       "productId": "Banan"
+    },
+    {
+      "comment": "sallad smakade bra!",
+      "userId": 3,
+      "productId": "sallad"
+    },
+    {
+      "comment": "goorka smakade bra!",
+      "userId": 3,
+      "productId": "gurka"
+    },
+    {
+      "comment": "Äpplet smakade bra!",
+      "userId": 3,
+      "productId": "Äpple"
     }
   ]
 }
