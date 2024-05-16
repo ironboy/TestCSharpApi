@@ -1,4 +1,5 @@
 // Global settings
+
 Globals = Obj(new
 {
     debugOn = true,
@@ -6,8 +7,8 @@ Globals = Obj(new
     aclOn = true,
     isSpa = true,
     port = 3001,
-    serverName = "Ironboy's Minimal API Server",
-    frontendPath = Path.Combine("..", "Frontend"),
+    serverName = "Benny's Minimal API Server",
+    frontendPath = FilePath("..", "Frontend"),
     sessionLifeTimeHours = 2
 });
 

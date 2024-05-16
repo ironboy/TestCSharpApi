@@ -10,6 +10,17 @@ public static class Shared
         set { _globals = value; }
     }
 
+    public static string FilePath(params string[] parts)
+    {
+        var c = Environment.CurrentDirectory;
+        var i = c.LastIndexOf("Backend");
+        var path = c.Substring(0, i + 7);
+        foreach (var part in parts)
+        {
+            path = Path.Combine(path, part);
+        }
+        return path;
+    }
     // A setter/getter for the WebApp
     // (created by Server.cs)
     private static WebApplication _app;

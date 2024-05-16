@@ -12,6 +12,8 @@ global using static Dyndata.Factory;
 
 // Internal
 global using WebApp;
+global using Xunit;
+global using Xlog = Xunit.Abstractions.ITestOutputHelper;
 global using static WebApp.Shared;
 global using static WebApp.RequestBodyParser;
 global using static WebApp.DbQuery;
