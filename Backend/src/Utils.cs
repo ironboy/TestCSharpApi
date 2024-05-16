@@ -1,3 +1,8 @@
+using System.Collections.Immutable;
+using System.Net.NetworkInformation;
+using Microsoft.AspNetCore.Razor.TagHelpers;
+using SQLitePCL;
+
 namespace WebApp;
 public static class Utils
 {
@@ -5,6 +10,11 @@ public static class Utils
     {
         return a + b;
     }
+
+
+        private static readonly Arr goodWords = ((Arr)JSON.Parse(
+        File.ReadAllText(FilePath("json", "good-words.json"))
+    )).Sort((a, b) => ((string)b).Length - ((string)a).Length);
 /*
     public static Arr CreateMockUsers()
     {
@@ -37,7 +47,7 @@ public static class Utils
         !password.Any(char.IsLower) || 
         !password.Any(char.IsUpper) || 
         !password.Any(char.IsDigit) || 
-        !password.All(char.IsLetterOrDigit))
+        password.All(char.IsLetterOrDigit))
 
      {
         return false;
@@ -47,4 +57,29 @@ public static class Utils
         return true;
     }
 }
+    public static string RemoveBadWords(string comment, string replaceWith = "---")
+    {
+        comment = " " + comment;
+        replaceWith = " " + replaceWith + "$1";
+        goodWords.ForEach(bad =>
+        {
+            var pattern = @$" {bad}([\,\.\!\?\:\; ])";
+            comment = Regex.Replace(
+                comment, pattern, replaceWith, RegexOptions.IgnoreCase);
+        });
+        return comment[1..];
+    }
+
+/*)
+    public static string RemoveMockUsers()
+    {
+        var mockUsers = SQLQueryOne(
+         @"SELECT id, created, email, firstName, lastName, role FROM users
+        ")
+    }
+*/
+
+
+
+
 }

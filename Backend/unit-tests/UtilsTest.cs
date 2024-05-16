@@ -55,4 +55,25 @@ public class UtilsTest(Xlog output)
 
     }
 
+
+     [Theory]
+    [InlineData(
+        "---",
+        "Hello, I am going through hell. Hell is a real fucking place " +
+            "outside your goddamn comfy tortoiseshell!",
+        "Hello, I am going through ---. --- is a real --- place " +
+            "outside your --- comfy tortoiseshell!"
+    )]
+    [InlineData(
+        "---",
+        "Rhinos have a horny knob? (or what should I call it) on " +
+            "their heads. And doorknobs are damn round.",
+        "Rhinos have a --- ---? (or what should I call it) on " +
+            "their heads. And doorknobs are --- round."
+    )]
+    public void TestRemoveBadWords(string replaceWith, string original, string expected)
+    {
+        Assert.Equal(expected, Utils.RemoveBadWords(original, replaceWith));
+    }
+
 }
