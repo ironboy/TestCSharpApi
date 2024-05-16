@@ -1,6 +1,6 @@
 Feature: As user I want to be able to see the correct products listed when I have chosen a category so that I can easily filter the product list by category.
 
-  Scenario Outline: Check that the category <category> show the product <product>.
+  Scenario Outline: Check that the category <category> shows the product <product>.
     Given that I am on the product page
     When I choose the category "<category>"
     Then I should see the product "<product>"
@@ -21,9 +21,15 @@ Feature: As user I want to be able to see the correct products listed when I hav
 
     Examples:
       | category    | product           |
-      | Prisvänligt | Basic tomatsås    |
+      | Vardag      | Basic tomatsås    |
       | Vardag      | Mjöliga makaroner |
+      | Lyx         | Basic tomatsås    |
+      | Lyx         | Mjöliga makaroner |
+      | Prisvänligt | Potatis           |
+      | Prisvänligt | Gul lök           |
       | Lyx         | Potatis           |
       | Lyx         | Gul lök           |
       | Prisvänligt | Champagne         |
       | Prisvänligt | Rysk kaviar       |
+      | Vardag      | Champagne         |
+      | Vardag      | Rysk kaviar       |
