@@ -155,12 +155,23 @@ select {
 
 .product {
   border-top: 1px solid #999;
+  background-size: contain;
+  background-repeat: no-repeat;
+  padding-left: 200px;
+  background-position-y: 20px;
 }
 
 .price {
   font-weight: bold;
   text-align: right;
 }
+
+.product>div {
+  width: 45%;
+  display: inline-block;
+}
+
+
 
 /* For a fixed header */
 /*header {

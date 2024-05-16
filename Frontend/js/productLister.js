@@ -19,11 +19,12 @@ export async function productLister(onlyProducts = false) {
       </select>
     </label>`}
     <div class="products">
-      ${productsToShow.map(x => /*html*/`<div class="product">
-        <h3 class="name">${x.name}</h3>
-        <p class="description">${x.description}</p>
-        <p class="price">Pris: ${x.price} kr</p>
-      </div>`).join('')}
+      ${productsToShow.map(x => /*html*/`<div class="product"
+        style="background-image:url(/images/products/${x.id}.webp)">
+          <h3 class="name">${x.name}</h3>
+          <p class="description">${x.description}</p>
+          <p class="price">Pris: ${x.price} kr</p>
+        </div>`).join('')}
     </div>
   `;
 }
