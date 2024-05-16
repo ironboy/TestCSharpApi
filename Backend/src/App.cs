@@ -10,5 +10,3 @@ Globals = Obj(new
     frontendPath = FilePath("..", "Frontend"),
     sessionLifeTimeHours = 2
 });
-
-Server.Start();
