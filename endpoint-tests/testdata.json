@@ -10,42 +10,43 @@
       "description": "Färska frukter."
     }
   ],
-  "products": [{
-    "name": "gurka",
-    "description": "bra till mycket",
-    "price": 10,
-    "categoryId": "Grönsaker"
-  },
-  {
-    "name": "Sallad",
-    "description": "grön och fräsch",
-    "price": 12,
-    "categoryId": "Grönsaker"
-  },
-  {
-    "name": "tomat",
-    "description": "kom nu ketchup",
-    "price": 10,
-    "categoryId": "Grönsaker"
-  },
-  {
-    "name": "morot",
-    "description": "I väntan på snö",
-    "price": 10,
-    "categoryId": "Grönsaker"
-  },
-  {
-    "name": "Äpple",
-    "description": "Gott att bita i",
-    "price": 42,
-    "categoryId": "Frukter"
-  },
-  {
-    "name": "Banan",
-    "description": "BANANAAAAA",
-    "price": 23,
-    "categoryId": "Frukter"
-  }
+  "products": [
+    {
+      "name": "gurka",
+      "description": "bra till mycket",
+      "price": 10,
+      "categoryId": "Grönsaker"
+    },
+    {
+      "name": "Sallad",
+      "description": "grön och fräsch",
+      "price": 12,
+      "categoryId": "Grönsaker"
+    },
+    {
+      "name": "tomat",
+      "description": "kom nu ketchup",
+      "price": 10,
+      "categoryId": "Grönsaker"
+    },
+    {
+      "name": "morot",
+      "description": "I väntan på snö",
+      "price": 10,
+      "categoryId": "Grönsaker"
+    },
+    {
+      "name": "Äpple",
+      "description": "Gott att bita i",
+      "price": 42,
+      "categoryId": "Frukter"
+    },
+    {
+      "name": "Banan",
+      "description": "BANANAAAAA",
+      "price": 23,
+      "categoryId": "Frukter"
+    }
   ],
   "comments": [
     {

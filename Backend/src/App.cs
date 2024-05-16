@@ -8,7 +8,7 @@ Globals = Obj(new
     isSpa = true,
     port = 3001,
     serverName = "Benny's Minimal API Server",
-    frontendPath = FilePath("..", "Frontend"),
+    frontendPath = Path.Combine("..", "Frontend"),
     sessionLifeTimeHours = 2
 });
 

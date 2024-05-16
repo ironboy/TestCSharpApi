@@ -2,8 +2,8 @@ namespace WebApp;
 public static class DbQuery
 {
     // Setup the database connection
-         private static SqliteConnection db =
-        new SqliteConnection("Data Source=" + FilePath("_db.sqlite3"));
+    private static SqliteConnection db =
+   new SqliteConnection("Data Source=" + FilePath("_db.sqlite3"));
 
 
     static DbQuery() { db.Open(); }
@@ -65,7 +65,7 @@ public static class DbQuery
         return rows;
     }
 
-   
+
     // Run a query - only return the first row, as an object
     public static dynamic SQLQueryOne(
         string sql, object parameters = null, HttpContext context = null
