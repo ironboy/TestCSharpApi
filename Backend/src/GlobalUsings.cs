@@ -11,7 +11,6 @@ global using Dyndata;
 global using static Dyndata.Factory;
 
 // Internal
-
 global using WebApp;
 global using Xunit;
 global using Xlog = Xunit.Abstractions.ITestOutputHelper;
