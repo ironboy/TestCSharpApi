@@ -6,65 +6,53 @@ namespace WebApp;
 public static class Utils
 {
 
+    // Read all mock users from file
+    private static readonly Arr mockUsers = JSON.Parse(
+        File.ReadAllText(FilePath("json", "mock-users.json"))
+    );
+
+    // Read all bad words from file and sort from longest to shortest
+    // if we didn't sort we would often get "---ing" instead of "---" etc.
+    // (Comment out the sort - run the unit tests and see for yourself...)
+    private static readonly Arr badWords = ((Arr)JSON.Parse(
+        File.ReadAllText(FilePath("json", "bad-words.json"))
+    )).Sort((a, b) => ((string)b).Length - ((string)a).Length);
+
     public static bool IsPasswordGoodEnough(string password)
     {
-
-        bool strongPassword = false;
-
-        if (password.Length > 7)
-        {
-            if (password.ToCharArray().Any(char.IsSymbol) || password.ToCharArray().Any(char.IsPunctuation)
-            && password.ToCharArray().Any(char.IsUpper)
-            && password.ToCharArray().Any(char.IsLower)
-            && password.ToCharArray().Any(char.IsDigit))
-            {
-                strongPassword = true;
-            }
-        }
-
-        return strongPassword;
+        return password.Length >= 8
+            && password.Any(Char.IsDigit)
+            && password.Any(Char.IsLower)
+            && password.Any(Char.IsUpper)
+            && password.Any(x => !Char.IsLetterOrDigit(x));
     }
 
-    
-        public static string RemoveBadWords(string inputWord)
-        {
-
-            string cencor = "****";
-            string readBadWords = File.ReadAllText(Path.Combine("json", "bad-words.json"));
-            dynamic badWords = JSON.Parse(readBadWords);
-
-            foreach (var word in badWords)
-            {
-                if (inputWord.Contains(word))
-                {
-                    Console.WriteLine(inputWord);
-                    inputWord = inputWord.Replace(word, cencor);
-                    Console.WriteLine(inputWord);
-                }
-                else
-                {
-                    Log("No fkedup word was used");
-                }
-            }
-
-            return inputWord;
-        }
-    
-
-    public static int SumInts(int a, int b)
+    public static bool IsPasswordGoodEnoughRegexVersion(string password)
     {
-        return a + b;
+        // See: https://dev.to/rasaf_ibrahim/write-regex-password-validation-like-a-pro-5175
+        var pattern = @"^(?=.*[0-9])(?=.*[a-zåäö])(?=.*[A-ZÅÄÖ])(?=.*\W).{8,}$";
+        return Regex.IsMatch(password, pattern);
     }
 
+    public static string RemoveBadWords(string comment, string replaceWith = "---")
+    {
+        comment = " " + comment;
+        replaceWith = " " + replaceWith + "$1";
+        badWords.ForEach(bad =>
+        {
+            var pattern = @$" {bad}([\,\.\!\?\:\; ])";
+            comment = Regex.Replace(
+                comment, pattern, replaceWith, RegexOptions.IgnoreCase);
+        });
+        return comment[1..];
+    }
 
     public static Arr CreateMockUsers()
     {
-        // Read all mock users from the JSON file
-        var read = File.ReadAllText(FilePath("json", "mock-users.json"));
-        Arr mockUsers = JSON.Parse(read);
         Arr successFullyWrittenUsers = Arr();
         foreach (var user in mockUsers)
         {
+            // user.password = "12345678";
             var result = SQLQueryOne(
                 @"INSERT INTO users(firstName,lastName,email,password)
                 VALUES($firstName, $lastName, $email, $password)
@@ -81,6 +69,7 @@ public static class Utils
         return successFullyWrittenUsers;
     }
 
+
     public static Arr RemoveMockUsers()
     {
         var read = File.ReadAllText(FilePath("json", "mock-users.json"));
@@ -93,19 +82,24 @@ public static class Utils
         //compare and filter. Only keep emails that exist in mockUser.email (json file)
         Arr mockUsersInDb = mockUsers.Filter(mockUser => emailsInDb.Contains(mockUser.email));
         //{"firstName":"Andreas","lastName":"Syphus","email":"asyphus8@odnoklassniki.ru"},
-
-        Arr mockuserEmail = mockUsersInDb.Map(mockuser => mockuser.email);
-
-        foreach (var email in mockuserEmail)
+        foreach (var user in mockUsersInDb)
         {
             var removeUser = SQLQueryOne(
-     @"DELETE FROM users WHERE email = '$email'", email
-    //DELETE FROM users WHERE email = 'rstonardrr@wunderground.com';
- );
+     @"DELETE FROM users WHERE email = $email", user);
 
-            successRemovedMockUsers.Push(email);
+            if (!removeUser.HasKey("error"))
+            {
+                user.Delete("password");
+                // The specification says return the user list without password
+                successRemovedMockUsers.Push(user);
+            }
         }
         return successRemovedMockUsers;
     }
 
+    public static Arr Count­Do­mains­FromU­se­rE­mails()
+    {
+
+        return null;
+    }
 }
