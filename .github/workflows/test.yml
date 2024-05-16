@@ -2,9 +2,9 @@ name: .NET Core Desktop
 
 on:
   push:
-    branches: [ "feature-unit-testing-play" ]
+    branches: [ "feature-2024-05-14" ]
   pull_request:
-    branches: [ "feature-unit-testing-play" ]
+    branches: [ "feature-2024-05-14" ]
 
 jobs:
 
