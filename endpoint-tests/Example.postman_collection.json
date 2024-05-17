@@ -944,8 +944,6 @@
 							"",
 							"// pm variables have a scope of one request",
 							"// setting four variables used in the body",
-							"pm.variables.set(\"comment\", comments.comment);",
-							"pm.variables.set(\"userId\", comments.userId);",
 							"pm.variables.set(\"productId\", comments.productId);",
 							""
 						],
