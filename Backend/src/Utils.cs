@@ -1,53 +1,92 @@
+using Xunit.Sdk;
+
 namespace WebApp;
+
 public static class Utils
 {
-    // Read all mock users from file
+        // Read all mock users from file
     private static readonly Arr mockUsers = JSON.Parse(
         File.ReadAllText(FilePath("json", "mock-users.json"))
     );
-
-    // Read all bad words from file and sort from longest to shortest
-    // if we didn't sort we would often get "---ing" instead of "---" etc.
-    // (Comment out the sort - run the unit tests and see for yourself...)
-    private static readonly Arr badWords = ((Arr)JSON.Parse(
-        File.ReadAllText(FilePath("json", "bad-words.json"))
-    )).Sort((a, b) => ((string)b).Length - ((string)a).Length);
-
+    public static int SumInts(int a, int b)
+    {
+        return a + b;
+    }
     public static bool IsPasswordGoodEnough(string password)
     {
-        return password.Length >= 8
-            && password.Any(Char.IsDigit)
-            && password.Any(Char.IsLower)
-            && password.Any(Char.IsUpper)
-            && password.Any(x => !Char.IsLetterOrDigit(x));
-    }
+        string symbols = "@|!#$%&/()=?»«@£§€{}.-;'<>_,";
+        int lower = 0;
+        int upper = 0;
+        int digit = 0;
+        int uniq = 0;
 
-    public static bool IsPasswordGoodEnoughRegexVersion(string password)
-    {
-        // See: https://dev.to/rasaf_ibrahim/write-regex-password-validation-like-a-pro-5175
-        var pattern = @"^(?=.*[0-9])(?=.*[a-zåäö])(?=.*[A-ZÅÄÖ])(?=.*\W).{8,}$";
-        return Regex.IsMatch(password, pattern);
-    }
-
-    public static string RemoveBadWords(string comment, string replaceWith = "---")
-    {
-        comment = " " + comment;
-        replaceWith = " " + replaceWith + "$1";
-        badWords.ForEach(bad =>
+        foreach (char symb in symbols)
+         {
+            if (password.Contains(symb))
+            {
+                uniq++;
+            }
+        }
+        foreach(var let in password) 
         {
-            var pattern = @$" {bad}([\,\.\!\?\:\; ])";
-            comment = Regex.Replace(
-                comment, pattern, replaceWith, RegexOptions.IgnoreCase);
-        });
-        return comment[1..];
+            if (char.IsUpper(let))
+            {
+                lower++;
+            }
+            if (char.IsLower(let))
+            {
+                upper++;
+            }
+            if (char.IsDigit(let))
+            {
+                digit++;
+            }
+        }
+        if(password.Length < 8 || digit < 1 || upper < 1 || lower < 1 || uniq < 1)
+        {
+            return false;
+        }
+        return true;
     }
+    public static string RemoveBadWords(string text, string replacement)
+    {
+        var read = File.ReadAllText(FilePath("json", "bad-words.json"));
+        Arr badwords = JSON.Parse(read).badwords;
 
+        string newText = "";
+
+        string[] singleWord = text.Split(" ");
+
+        foreach (var word in singleWord)
+        {
+            bool goodWord = true;
+            foreach (var badW in badwords)
+            {
+                if (badW == word)
+                {
+                    goodWord = false;
+                }
+            }
+            if (goodWord == true)
+            {
+                newText += word + " ";
+            }
+            else
+            {
+                newText += replacement + " ";
+            }
+        }
+        return newText;
+    }
     public static Arr CreateMockUsers()
     {
         Arr successFullyWrittenUsers = Arr();
         foreach (var user in mockUsers)
         {
-            // user.password = "12345678";
+            string[] half = user.email.Split("@");
+            user.password = half[0];
+            user.email = half[0] + "1@" + half[1];
+
             var result = SQLQueryOne(
                 @"INSERT INTO users(firstName,lastName,email,password)
                 VALUES($firstName, $lastName, $email, $password)
@@ -61,9 +100,34 @@ public static class Utils
                 successFullyWrittenUsers.Push(user);
             }
         }
+
         return successFullyWrittenUsers;
     }
+    public static Arr RemoveMockUsers()
+    {
+        Arr deletedUsers = Arr();
+        Arr users = SQLQuery(@"
+        SELECT * 
+        FROM users 
+        WHERE email
+        LIKE '%1@%'");
 
-    // Now write the two last ones yourself!
-    // See: https://sys23m-jensen.lms.nodehill.se/uploads/videos/2021-05-18T15-38-54/sysa-23-presentation-2024-05-02-updated.html#8
+        var usedToBees = users.Map(user => {
+            Log(user.email);
+        return user.email; // Return email for further processing if needed
+        });
+        
+       foreach(var user in users)
+        {
+            user.Delete("password");
+            deletedUsers.Push(user);
+            Log(user);
+        }
+
+        var result = SQLQuery(@"
+        DELETE FROM users
+        WHERE email LIKE '%1@%'");
+
+        return deletedUsers;
+    }
 }

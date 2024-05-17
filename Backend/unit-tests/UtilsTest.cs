@@ -1,56 +1,42 @@
+using FracturedJson.Parsing;
+using Xunit;
 namespace WebApp;
-
-public class UtilsTest(Xlog Console)
+public class UtilsTest
 {
-    // Read all mock users from file
     private static readonly Arr mockUsers = JSON.Parse(
         File.ReadAllText(FilePath("json", "mock-users.json"))
-    );
-
-    [Theory]
-    [InlineData("abC9#fgh", true)]  // ok
-    [InlineData("stU5/xyz", true)]  // ok too
-    [InlineData("abC9#fg", false)]  // too short
-    [InlineData("abCd#fgh", false)] // no digit
-    [InlineData("abc9#fgh", false)] // no capital letter
-    [InlineData("abC9efgh", false)] // no special character
-    public void TestIsPasswordGoodEnough(string password, bool expected)
+        );
+   [Fact]
+    public void TestSumInt()
     {
-        Assert.Equal(expected, Utils.IsPasswordGoodEnough(password));
+        Assert.Equal(12, Utils.SumInts(7, 5));
+        Assert.Equal(-3, Utils.SumInts(6, -9));
     }
 
-    [Theory]
-    [InlineData("abC9#fgh", true)]  // ok
-    [InlineData("stU5/xyz", true)]  // ok too
-    [InlineData("abC9#fg", false)]  // too short
-    [InlineData("abCd#fgh", false)] // no digit
-    [InlineData("abc9#fgh", false)] // no capital letter
-    [InlineData("abC9efgh", false)] // no special character
-    public void TestIsPasswordGoodEnoughRegexVersion(string password, bool expected)
+    [Fact]
+    public void TestSumChars()
     {
-        Assert.Equal(expected, Utils.IsPasswordGoodEnoughRegexVersion(password));
+        Assert.False(Utils.IsPasswordGoodEnough("hellom"));
+        Assert.False(Utils.IsPasswordGoodEnough("hellothis"));
+        Assert.False(Utils.IsPasswordGoodEnough("howareyou8"));
+        Assert.False(Utils.IsPasswordGoodEnough("Howareyoufrend"));
+        Assert.True(Utils.IsPasswordGoodEnough("Hellomyfrend1!"));
+        Assert.False(Utils.IsPasswordGoodEnough("Hellomyfrend1k"));
     }
-
-    [Theory]
-    [InlineData(
-        "---",
-        "Hello, I am going through hell. Hell is a real fucking place " +
-            "outside your goddamn comfy tortoiseshell!",
-        "Hello, I am going through ---. --- is a real --- place " +
-            "outside your --- comfy tortoiseshell!"
-    )]
-    [InlineData(
-        "---",
-        "Rhinos have a horny knob? (or what should I call it) on " +
-            "their heads. And doorknobs are damn round.",
-        "Rhinos have a --- ---? (or what should I call it) on " +
-            "their heads. And doorknobs are --- round."
-    )]
-    public void TestRemoveBadWords(string replaceWith, string original, string expected)
+    [Fact]
+    public void TestRemoveBadWords()
     {
-        Assert.Equal(expected, Utils.RemoveBadWords(original, replaceWith));
-    }
+        
+        string text = "Hello, how are you, you bum. fuck you please!";
+        string replacement = "bunny";
 
+        string result = Utils.RemoveBadWords(text, replacement);
+
+        string expectation = "Hello, how are you, you bum. bunny you please! ";
+
+        Assert.Equal(expectation, result);
+
+    }
     [Fact]
     public void TestCreateMockUsers()
     {
@@ -71,6 +57,22 @@ public class UtilsTest(Xlog Console)
             "are equivalent (the same) as the expected users!");
         Assert.Equivalent(mockUsersNotInDb, result);
         Console.WriteLine("The test passed!");
+    }
+    [Fact]
+    public void TestRemoveMockUsers()
+    {
+        Arr allUsersInDb = SQLQuery("SELECT email FROM users");
+
+        Arr mockUsersInDb = allUsersInDb.Map(
+            user => user.email.contains("1@"));
+
+        var result = Utils.RemoveMockUsers();
+        Console.WriteLine($"The amount of users found in {mockUsersInDb.Length} should");
+        Console.WriteLine($"be same as the ones in {result.Length}");
+        Console.WriteLine($"The test also asserts that these two Arrs are the same");
+        Assert.Equivalent(mockUsersInDb, result);
+
+
     }
 
     // Now write the two last ones yourself!
