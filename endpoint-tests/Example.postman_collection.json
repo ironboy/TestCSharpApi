@@ -888,7 +888,7 @@
 							"// If there are more products - then \"loop\"",
 							"// through them using setNextRequest",
 							"if(testData.products[testData.counter]){",
-							"    pm.execution.setNextRequest(\"Get products\");",
+							"    pm.execution.setNextRequest(\"Get products after change\");",
 							"}",
 							"// Otherwise console.log \"All done\"",
 							"else {",
