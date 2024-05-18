@@ -937,17 +937,21 @@
 							"",
 							"// Get the current productId",
 							"//let productId = testData.products.Id[testData.counter];",
-							"let comment = testData.comments[testData.counter];",
-							"",
+							"let comment = \"Good stuff!\";",
+							"let userId = \"3\";",
 							"let productId = testData.products[testData.counter].Id;",
 							"",
 							"// Save changes to our test data (the new value of productId)",
-							"pm.collectionVariables.set(\"testData\",testData);",
+							"//pm.collectionVariables.set(\"testData\",testData);",
 							"",
 							"// pm variables have a scope of one request",
 							"// setting four variables used in the body",
-							"pm.variables.set(\"productId\", productId);",
-							"pm.variables.set(\"comment\", comment);"
+							"pm.variables.set(\"comment\", comments.comment);",
+							"pm.variables.set(\"userId\", comments.userId);",
+							"pm.variables.set(\"productId\", comments.productId);",
+							"",
+							"// Save changes to our test data (the new value of productId)",
+							"pm.collectionVariables.set(\"testData\",testData);"
 						],
 						"type": "text/javascript",
 						"packages": {}
@@ -959,12 +963,14 @@
 						"exec": [
 							"// Get the test data",
 							"let testData = pm.collectionVariables.get(\"testData\");",
+							"",
 							"// Get the current product",
 							"let product = testData.products[testData.counter];",
 							"let comment = testData.comments[testData.counter];",
 							"",
 							"// Read the response",
 							"let response = pm.response;",
+							"",
 							"// Read the response data",
 							"let responseData = pm.response.json();",
 							"",
@@ -990,10 +996,11 @@
 							"",
 							"// Update the counter and save the updated test data",
 							"// (also including the id we set in the second test)",
-							"testData.counter++;",
 							"pm.collectionVariables.set(\"testData\",testData);",
+							"// IMPORTANT: Set counter to 0 in preparation of next request",
+							"testData.counter = 0;",
 							"",
-							"// If there are more products - then \"loop\"",
+							"/*// If there are more products - then \"loop\"",
 							"// through them using setNextRequest",
 							"if(testData.comments[testData.counter]){",
 							"    pm.execution.setNextRequest(\"Create comment\");",
@@ -1004,7 +1011,7 @@
 							"    // IMPORTANT: Set counter to 0 in preparation of next request",
 							"    testData.counter = 0;",
 							"    pm.collectionVariables.set(\"testData\",testData);",
-							"}"
+							"}*/"
 						],
 						"type": "text/javascript",
 						"packages": {}
@@ -1016,7 +1023,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"comment\": \"Good stuff!\",\n    \"userId\": \"3\",\n    \"productId\": {{productId}}\n}",
+					"raw": "{\n    \"comment\": {{comment}},\n    \"userId\": {{userId}},\n    \"productId\": {{productId}}\n}",
 					"options": {
 						"raw": {
 							"language": "json"
