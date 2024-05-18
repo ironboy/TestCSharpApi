@@ -1024,7 +1024,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"comment\": \"{{comment}}\",\n    \"userID\": {{userID}},\n    \"productId\": \"{{productId}}\"\n}",
+					"raw": "{\n    \"comment\": \"{{comment}}\",\n    \"userId\": {{userId}},\n    \"productId\": \"{{productId}}\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
