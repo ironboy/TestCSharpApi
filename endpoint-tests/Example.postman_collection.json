@@ -937,21 +937,21 @@
 							"",
 							"// Get the current productId",
 							"//let productId = testData.products.Id[testData.counter];",
-							"let comment = \"Good stuff!\";",
-							"let userId = \"3\";",
+							"//let comment = \"Good stuff!\";",
+							"//let userId = \"3\";",
 							"let productId = testData.products[testData.counter].Id;",
 							"",
 							"// Save changes to our test data (the new value of productId)",
-							"//pm.collectionVariables.set(\"testData\",testData);",
+							"pm.collectionVariables.set(\"testData\",testData);",
 							"",
 							"// pm variables have a scope of one request",
 							"// setting four variables used in the body",
-							"pm.variables.set(\"comment\", comments.comment);",
-							"pm.variables.set(\"userId\", comments.userId);",
+							"//pm.variables.set(\"comment\", comments.comment);",
+							"//pm.variables.set(\"userId\", comments.userId);",
 							"pm.variables.set(\"productId\", comments.productId);",
 							"",
 							"// Save changes to our test data (the new value of productId)",
-							"pm.collectionVariables.set(\"testData\",testData);"
+							"//pm.collectionVariables.set(\"testData\",testData);"
 						],
 						"type": "text/javascript",
 						"packages": {}
@@ -1023,7 +1023,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"comment\": {{comment}},\n    \"userId\": {{userId}},\n    \"productId\": {{productId}}\n}",
+					"raw": "{\n    \"comment\": \"Good stuff\",\n    \"userId\": \"3\",\n    \"productId\": {{productId}}\n}",
 					"options": {
 						"raw": {
 							"language": "json"
