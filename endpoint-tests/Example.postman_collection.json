@@ -84,8 +84,8 @@
 							"  \"comments\": [",
 							"    {",
 							"      \"comment\": \"Very nice gurka\",",
-							"      \"productId\": \"Gurka\",",
-							"      \"userId\": 3",
+							"      \"userId\": 3,",
+							"      \"productId\": \"Gurka\"",
 							"    }",
 							"  ]",
 							"}",
@@ -1024,7 +1024,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"comment\": \"{{comment}}\",\n    \"productId\": \"{{productId}}\",\n    \"userID\": {{userID}}\n    \n}",
+					"raw": "{\n    \"comment\": \"{{comment}}\",\n    \"userID\": {{userID}},\n    \"productId\": \"{{productId}}\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
