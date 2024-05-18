@@ -943,7 +943,7 @@
 							"let productId = product.Id;",
 							"",
 							"// Save changes to our test data (the new value of productId)",
-							"pm.collectionVariables.set(\"testData\",testData);",
+							"//pm.collectionVariables.set(\"testData\",testData);",
 							"",
 							"// pm variables have a scope of one request",
 							"// setting four variables used in the body",
@@ -952,7 +952,7 @@
 							"pm.variables.set(\"productId\", comments.productId);",
 							"",
 							"// Save changes to our test data (the new value of productId)",
-							"//pm.collectionVariables.set(\"testData\",testData);"
+							"pm.collectionVariables.set(\"testData\",testData);"
 						],
 						"type": "text/javascript",
 						"packages": {}
