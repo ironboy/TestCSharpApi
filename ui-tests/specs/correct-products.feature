@@ -1,6 +1,6 @@
 Feature: As user I want to be able to see the correct products listed when I have chosen a category so that I can easily filter the product list by category.
 
-  Scenario: Check that the when I choose a "Alla" category, I see all the products with correct price.
+  Scenario: Check that when I choose the "Alla" category, I see all the products with correct price.
     Given that I am on the product page
     When I choose the category "Alla"
     Then I should see the price "45" for the product "Basmatiris"
@@ -62,8 +62,8 @@ Feature: As user I want to be able to see the correct products listed when I hav
     And I should see the product "Pasta" with the description "En vanlig pasta."
     And I should see the product "Fläskkarré" with the description "Riktigt gott kött, speciellt på grill."
     And I should see the product "Revbensspjäll" with the description "Saftiga revben. Från lokala kor."
-    And I should see the product "Ryggbiff" with the description "Kött från saftiga del av kon."
-    And I should see the product "Jordnötssmör" with the description "Ekologiskt jordnötssmör."
+    And I should see the product "Ryggbiff" with the description "Kött från saftig del av kon."
+    And I should see the product "Jordnötssmör" with the description "Ekologisk jordnötssmör."
     And I should see the product "Tzatsikisås" with the description "En god grekisk sås, gott till grillat kött."
     And I should see the product "Vitlökssås" with the description "Hemmagjord vitlökssås som slår alla andra vitlökssåser."
     And I should see the product "Paprikachips" with the description "Chips från Estrella. Passar till att kolla film i hemmet."
@@ -72,3 +72,40 @@ Feature: As user I want to be able to see the correct products listed when I hav
     And I should see the product "Äpplen" with the description "Goda, färska, Granny Smith äpplen."
     And I should see the product "Bananer" with the description "Bananer från Nicaragua."
     And I should see the product "Citroner" with the description "Goda, mogna Amalfis citroner. Odlade i Indien."
+
+  Scenario: Make sure the right description matches product in "Kolhydrat" category
+    Given that I am on the product page
+    When I choose the category "Kolhydrat"
+    Then I should see the product "Basmatiris" with the description "Ett långkornigt ris."
+    And I should see the product "Potatis" with the description "Färsk potatis. Ekologiskt odlad i Bjärred."
+    And I should see the product "Pasta" with the description "En vanlig pasta."
+
+  Scenario: Make sure the right price matches product in "Protein" category
+    Given that I am on the product page
+    When I choose the category "Protein"
+    Then I should see the product "Fläskkarré" with the description "Riktigt gott kött, speciellt på grill."
+    And I should see the product "Revbensspjäll" with the description "Saftiga revben. Från lokala kor."
+    And I should see the product "Ryggbiff" with the description "Kött från saftig del av kon."
+ 
+
+  Scenario: Make sure the right price matches product in "Gott & blandat" category
+    Given that I am on the product page
+    When I choose the category "Gott & blandat"
+    And I should see the product "Paprikachips" with the description "Chips från Estrella. Passar till att kolla film i hemmet."
+    And I should see the product "Chokladcookies" with the description "Riktigt krispiga och smarriga kakor från Marabou."
+    And I should see the product "Saltchips" with the description "Perfekt saltade chips från Pringles."
+ 
+  Scenario: Make sure the right price matches product in "Fettkälla" category
+    Given that I am on the product page
+    When I choose the category "Fettkälla"
+    And I should see the product "Jordnötssmör" with the description "Ekologisk jordnötssmör."
+    And I should see the product "Tzatsikisås" with the description "En god grekisk sås, gott till grillat kött."
+    And I should see the product "Vitlökssås" with the description "Hemmagjord vitlökssås som slår alla andra vitlökssåser."
+ 
+  Scenario: Make sure the right price matches product in "Frukt" category
+    Given that I am on the product page
+    When I choose the category "Frukt"
+    And I should see the product "Äpplen" with the description "Goda, färska, Granny Smith äpplen."
+    And I should see the product "Bananer" with the description "Bananer från Nicaragua."
+    And I should see the product "Citroner" with the description "Goda, mogna Amalfis citroner. Odlade i Indien."
+

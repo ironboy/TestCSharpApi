@@ -21,6 +21,6 @@ Then('I should see the price {string} for the product {string}', (productPrice, 
   cy.contains('.product .name', productName).siblings('.price').should('contain', productPrice);
 });
 
-Then('I should see the product {string} with the description {string}', (productName, productDescription => {
-  cy.contains('.producnt .name', productName).siblings('.price').should('contain', productDescription);
-}));
+Then('I should see the product {string} with the description {string}', (productName, productDescription) => {
+  cy.contains('.product .name', productName).siblings('.description').should('contain', productDescription);
+});
