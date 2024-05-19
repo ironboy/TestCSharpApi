@@ -430,6 +430,96 @@
 			"response": []
 		},
 		{
+			"name": "Get categories after change",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// Get the test data",
+							"let testData = pm.collectionVariables.get(\"testData\");",
+							"// Get the current category",
+							"let category = testData.categories[testData.counter];",
+							"",
+							"// Set a pm variable to id (it is used in the request url)",
+							"pm.variables.set(\"id\", category.id); "
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Get the test data",
+							"let testData = pm.collectionVariables.get(\"testData\");",
+							"// Get the current category",
+							"let category = testData.categories[testData.counter];",
+							"",
+							"// Read the response",
+							"let response = pm.response;",
+							"// Read the response data",
+							"let responseData = pm.response.json();",
+							"",
+							"// Test that we get a 200 code (ok request) back",
+							"pm.test(\"We should get an ok (code 200) back\",()=> {",
+							"    pm.expect(response.code).to.equal(200);",
+							"});",
+							"",
+							"// Test that the REST-api returns the sama data",
+							"// as our test data for the category",
+							"pm.test(\"Test that the correct category data is returned\", ()=> {",
+							"  console.log(\"category\", category);",
+							"  console.log(\"responseData\", responseData);",
+							"  pm.expect(category).to.deep.equal(responseData); ",
+							"});",
+							"",
+							"// Update the counter and save the updated test data",
+							"testData.counter++;",
+							"pm.collectionVariables.set(\"testData\",testData);",
+							"",
+							"// If there are more categories - then \"loop\"",
+							"// through them using setNextRequest",
+							"if(testData.categories[testData.counter]){",
+							"    pm.execution.setNextRequest(\"Get categories after change\");",
+							"}",
+							"// Otherwise console.log \"All done\"",
+							"else {",
+							"    console.log(\"All categories have been read correctly after the change.\");",
+							"    // IMPORTANT: Set counter to 0 in preparation of next request",
+							"    testData.counter = 0;",
+							"    pm.collectionVariables.set(\"testData\",testData);",
+							"}"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:3001/api/categories/{{id}}",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "3001",
+					"path": [
+						"api",
+						"categories",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Create products",
 			"event": [
 				{
@@ -1592,10 +1682,6 @@
 							"// Get the current category",
 							"let category = testData.categories[testData.counter];",
 							"",
-							"// Change the description and save to collectionVariables",
-							"category.description += \" Some extra text in the description.\";",
-							"pm.collectionVariables.set(\"testData\", testData);",
-							"",
 							"// Set a pm variable to id (it is used in the request url)",
 							"pm.variables.set(\"id\", category.id); ",
 							"",
@@ -1690,10 +1776,6 @@
 							"// Get the current product",
 							"let product = testData.products[testData.counter];",
 							"",
-							"// Change the description and save to collectionVariables",
-							"product.description += \" Some extra text in the description.\";",
-							"pm.collectionVariables.set(\"testData\", testData);",
-							"",
 							"// Set a pm variable to id (it is used in the request url)",
 							"pm.variables.set(\"id\", product.id); ",
 							"",
@@ -1787,10 +1869,6 @@
 							"let testData = pm.collectionVariables.get(\"testData\");",
 							"// Get the current comment",
 							"let comment = testData.comments[testData.counter];",
-							"",
-							"// Change the comment and save to collectionVariables",
-							"comment.comment += \" Some extra text in the comment.\";",
-							"pm.collectionVariables.set(\"testData\", testData);",
 							"",
 							"// Set a pm variable to id (it is used in the request url)",
 							"pm.variables.set(\"id\", comment.id); ",
@@ -2530,10 +2608,6 @@
 							"// Get the current product",
 							"let product = testData.products[testData.counter];",
 							"",
-							"// Change the description and save to collectionVariables",
-							"product.description += \" Some extra text in the description.\";",
-							"pm.collectionVariables.set(\"testData\", testData);",
-							"",
 							"// Set a pm variable to id (it is used in the request url)",
 							"pm.variables.set(\"id\", product.id); ",
 							"",
@@ -2627,10 +2701,6 @@
 							"let testData = pm.collectionVariables.get(\"testData\");",
 							"// Get the current comment",
 							"let comment = testData.comments[testData.counter];",
-							"",
-							"// Change the comment and save to collectionVariables",
-							"comment.comment += \" Some extra text in the comment.\";",
-							"pm.collectionVariables.set(\"testData\", testData);",
 							"",
 							"// Set a pm variable to id (it is used in the request url)",
 							"pm.variables.set(\"id\", comment.id); ",
