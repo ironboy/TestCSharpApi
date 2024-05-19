@@ -1148,7 +1148,7 @@
 							"// Get the test data",
 							"let testData = pm.collectionVariables.get(\"testData\");",
 							"// Get the current comment",
-							"let comment = testData.comment[testData.counter];",
+							"let comment = testData.comments[testData.counter];",
 							"",
 							"// Read the response",
 							"let response = pm.response;",
