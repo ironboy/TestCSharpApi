@@ -11,3 +11,7 @@ When('I choose the category {string}', (category) => {
 Then('I should see the product {string}', (productName) => {
   cy.get('.product .name').contains(productName);
 });
+
+Then('I should not see the product {string}', (productName) => {
+  cy.get('.product .name').should('not.include.text', productName);
+});
