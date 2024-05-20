@@ -49,6 +49,10 @@ jobs:
     - name: Run the endpoint tests
       shell: bash
       run: cd endpoint-tests && npm test
-
+    
+    # Run the UI tests
+    - name: Run the UI tests
+      shell: bash
+      run: cd ui-test && npm run test-ui-cli
 
     
