@@ -8,6 +8,9 @@ public static class Utils
     private static readonly Arr mockUsers = JSON.Parse(
         File.ReadAllText(FilePath("json", "mock-users.json"))
     );
+    private static readonly Arr badWords = ((Arr)JSON.Parse(
+        File.ReadAllText(FilePath("json", "bad-words.json"))
+    )).Sort((a, b) => ((string)b).Length - ((string)a).Length);
     public static int SumInts(int a, int b)
     {
         return a + b;
@@ -20,57 +23,18 @@ public static class Utils
             && password.Any(Char.IsUpper)
             && password.Any(x => !Char.IsLetterOrDigit(x));
     }
-        }
-        foreach(var let in password) 
-        {
-            if (char.IsUpper(let))
-            {
-                lower++;
-            }
-            if (char.IsLower(let))
-            {
-                upper++;
-            }
-            if (char.IsDigit(let))
-            {
-                digit++;
-            }
-        }
-        if(password.Length < 8 || digit < 1 || upper < 1 || lower < 1 || uniq < 1)
-        {
-            return false;
-        }
-        return true;
-    }
-    public static string RemoveBadWords(string text, string replacement)
+    public static string RemoveBadWords(string comment, string replaceWith = "---")
     {
-        var read = File.ReadAllText(FilePath("json", "bad-words.json"));
-        Arr badwords = JSON.Parse(read).badwords;
 
-        string newText = "";
-
-        string[] singleWord = text.Split(" ");
-
-        foreach (var word in singleWord)
+        comment = " " + comment;
+        replaceWith = " " + replaceWith + "$1";
+        badWords.ForEach(bad =>
         {
-            bool goodWord = true;
-            foreach (var badW in badwords)
-            {
-                if (badW == word)
-                {
-                    goodWord = false;
-                }
-            }
-            if (goodWord == true)
-            {
-                newText += word + " ";
-            }
-            else
-            {
-                newText += replacement + " ";
-            }
-        }
-        return newText;
+            var pattern = @$" {bad}([\,\.\!\?\:\; ])";
+            comment = Regex.Replace(
+                comment, pattern, replaceWith, RegexOptions.IgnoreCase);
+        });
+        return comment[1..];
     }
     public static Arr CreateMockUsers()
     {
@@ -78,7 +42,6 @@ public static class Utils
         foreach (var user in mockUsers)
         {
             string[] half = user.email.Split("@");
-            user.password = half[0];
             user.email = half[0] + "1@" + half[1];
 
             var result = SQLQueryOne(
@@ -94,28 +57,20 @@ public static class Utils
                 successFullyWrittenUsers.Push(user);
             }
         }
-
         return successFullyWrittenUsers;
     }
     public static Arr RemoveMockUsers()
     {
-        Arr deletedUsers = Arr();
-        Arr users = SQLQuery(@"
+        Arr deletedUsers = SQLQuery(@"
         SELECT * 
         FROM users 
         WHERE email
         LIKE '%1@%'");
 
-        var usedToBees = users.Map(user => {
-            Log(user.email);
-        return user.email; // Return email for further processing if needed
-        });
-        
-       foreach(var user in users)
+        foreach(var user in deletedUsers)
         {
+
             user.Delete("password");
-            deletedUsers.Push(user);
-            Log(user);
         }
 
         var result = SQLQuery(@"

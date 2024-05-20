@@ -13,30 +13,38 @@ public class UtilsTest
         Assert.Equal(-3, Utils.SumInts(6, -9));
     }
 
-    [Fact]
-    public void TestSumChars()
+    [Theory]
+    [InlineData("abC9#fgh", true)]  // ok
+    [InlineData("stU5/xyz", true)]  // ok too
+    [InlineData("abC9#fg", false)]  // too short
+    [InlineData("abCd#fgh", false)] // no digit
+    [InlineData("abc9#fgh", false)] // no capital letter
+    [InlineData("abC9efgh", false)] // no special character
+    public void TestIsPasswordGoodEnough(string password, bool expected)
     {
-        Assert.False(Utils.IsPasswordGoodEnough("hellom"));
-        Assert.False(Utils.IsPasswordGoodEnough("hellothis"));
-        Assert.False(Utils.IsPasswordGoodEnough("howareyou8"));
-        Assert.False(Utils.IsPasswordGoodEnough("Howareyoufrend"));
-        Assert.True(Utils.IsPasswordGoodEnough("Hellomyfrend1!"));
-        Assert.False(Utils.IsPasswordGoodEnough("Hellomyfrend1k"));
+        Assert.Equal(expected, Utils.IsPasswordGoodEnough(password));
     }
-    [Fact]
-    public void TestRemoveBadWords()
+
+    [Theory]
+    [InlineData(
+        "---",
+        "Hello, I am going through hell. Hell is a real fucking place " +
+            "outside your goddamn comfy tortoiseshell!",
+        "Hello, I am going through ---. --- is a real --- place " +
+            "outside your --- comfy tortoiseshell!"
+    )]
+    [InlineData(
+        "---",
+        "Rhinos have a horny knob? (or what should I call it) on " +
+            "their heads. And doorknobs are damn round.",
+        "Rhinos have a --- ---? (or what should I call it) on " +
+            "their heads. And doorknobs are --- round."
+    )]
+    public void TestRemoveBadWords(string replaceWith, string original, string expected)
     {
-        
-        string text = "Hello, how are you, you bum. fuck you please!";
-        string replacement = "bunny";
-
-        string result = Utils.RemoveBadWords(text, replacement);
-
-        string expectation = "Hello, how are you, you bum. bunny you please! ";
-
-        Assert.Equal(expectation, result);
-
+        Assert.Equal(expected, Utils.RemoveBadWords(original, replaceWith));
     }
+
     [Fact]
     public void TestCreateMockUsers()
     {
@@ -61,16 +69,21 @@ public class UtilsTest
     [Fact]
     public void TestRemoveMockUsers()
     {
-        Arr allUsersInDb = SQLQuery("SELECT email FROM users");
+        Arr allUsersInDb = SQLQuery("SELECT email FROM users WHERE email LIKE '%1@%'");
 
-        Arr mockUsersInDb = allUsersInDb.Map(
-            user => user.email.contains("1@"));
+        Arr emailsInDb = allUsersInDb.Map(user => user.email.Contains("1@"));
 
-        var result = Utils.RemoveMockUsers();
-        Console.WriteLine($"The amount of users found in {mockUsersInDb.Length} should");
-        Console.WriteLine($"be same as the ones in {result.Length}");
+        Arr mockUserEmail = mockUsers.Filter(
+            user => user.email.Contains("1@"));
+ 
+        Log(mockUserEmail);
+
+        Arr deletedUsers = Utils.RemoveMockUsers();
+
+        Console.WriteLine($"The amount of users found in {emailsInDb.Length} should");
+        Console.WriteLine($"be same as the ones in {deletedUsers.Length}");
         Console.WriteLine($"The test also asserts that these two Arrs are the same");
-        Assert.Equivalent(mockUsersInDb, result);
+        Assert.Equivalent(emailsInDb, deletedUsers);
 
 
     }
