@@ -14,18 +14,12 @@ public static class Utils
     }
     public static bool IsPasswordGoodEnough(string password)
     {
-        string symbols = "@|!#$%&/()=?»«@£§€{}.-;'<>_,";
-        int lower = 0;
-        int upper = 0;
-        int digit = 0;
-        int uniq = 0;
-
-        foreach (char symb in symbols)
-         {
-            if (password.Contains(symb))
-            {
-                uniq++;
-            }
+        return password.Length >= 8
+            && password.Any(Char.IsDigit)
+            && password.Any(Char.IsLower)
+            && password.Any(Char.IsUpper)
+            && password.Any(x => !Char.IsLetterOrDigit(x));
+    }
         }
         foreach(var let in password) 
         {
