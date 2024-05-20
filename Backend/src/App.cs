@@ -1,4 +1,6 @@
 // Global settings
+using System.Net;
+
 Globals = Obj(new
 {
     debugOn = true,
@@ -11,4 +13,8 @@ Globals = Obj(new
     sessionLifeTimeHours = 2
 });
 
-Server.Start();
+// Server.Start();
+
+//WebApp.Utils.CreateMockUsers();
+
+WebApp.Utils.DeleteMockUsers();

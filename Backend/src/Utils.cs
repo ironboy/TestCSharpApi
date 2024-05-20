@@ -11,15 +11,15 @@ public static class Utils
         return a + b;
     }
 
-
+/*
         private static readonly Arr goodWords = ((Arr)JSON.Parse(
         File.ReadAllText(FilePath("json", "good-words.json"))
     )).Sort((a, b) => ((string)b).Length - ((string)a).Length);
-/*
+*/
     public static Arr CreateMockUsers()
     {
         // Read all mock users from the JSON file
-        var read = File.ReadAllText(FilePath("json", "mock-users.json"));
+        var read = File.ReadAllText(FilePath("json", "mock-data.json"));
         Arr mockUsers = JSON.Parse(read);
         Arr successFullyWrittenUsers = Arr();
         foreach (var user in mockUsers)
@@ -40,7 +40,32 @@ public static class Utils
         }
         return successFullyWrittenUsers;
     }
-*/
+    
+
+
+
+
+public static Arr DeleteMockUsers()
+    {
+        var read = File.ReadAllText(Path.Combine("json", "MOCK-DATA.json"));
+        Arr mockUsers = JSON.Parse(read);
+        Arr successfullyDeletedUsers = Arr();
+        foreach (var user in mockUsers)
+        {
+
+            var result = SQLQueryOne(@"DELETE FROM users WHERE email = $email", user);
+
+            if (!result.HasKey("error"))
+            {
+                user.Delete("password");
+                successfullyDeletedUsers.Push(user);
+            }
+        }
+        return successfullyDeletedUsers;
+
+    }
+
+
     public static bool IsPasswordGoodEnough(string password)
 {
      if (password.Length < 8 || 
@@ -57,6 +82,7 @@ public static class Utils
         return true;
     }
 }
+/*
     public static string RemoveBadWords(string comment, string replaceWith = "---")
     {
         comment = " " + comment;
@@ -69,15 +95,9 @@ public static class Utils
         });
         return comment[1..];
     }
+    */
 
-/*)
-    public static string RemoveMockUsers()
-    {
-        var mockUsers = SQLQueryOne(
-         @"SELECT id, created, email, firstName, lastName, role FROM users
-        ")
-    }
-*/
+
 
 
 
