@@ -46,6 +46,9 @@ jobs:
       run: cd Backend && nohup dotnet run &
 
     # Run the endpoint tests
+    # (note: The reason we don't have to install Newman
+    #  is that it is already installed in the 
+    #  GitHub Actions Windows Server runner image)
     - name: Run the endpoint tests
       shell: bash
       run: cd endpoint-tests && npm test
@@ -53,6 +56,6 @@ jobs:
     # Run the UI tests
     - name: Run the UI tests
       shell: bash
-      run: cd ui-test && npm run test-ui-cli
+      run: cd ui-tests && npm install && npm run test-ui-cli
 
     
