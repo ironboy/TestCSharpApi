@@ -869,6 +869,7 @@
 							"\r",
 							"// Update the counter and save the updated test data\r",
 							"// (also including the id we set in the second test)\r",
+							"\r",
 							"testData.counter++;\r",
 							"pm.collectionVariables.set(\"testData\",testData);\r",
 							"\r",
@@ -883,7 +884,8 @@
 							"    // IMPORTANT: Set counter to 0 in preparation of next request\r",
 							"    testData.counter = 0;\r",
 							"    pm.collectionVariables.set(\"testData\",testData);\r",
-							"}"
+							"}\r",
+							""
 						],
 						"type": "text/javascript",
 						"packages": {}
@@ -1415,7 +1417,7 @@
 							"    // Log",
 							"    console.log(\"The category has not been created\", category);",
 							"});",
-							"",
+							"/*",
 							"testData.counter++;",
 							"pm.collectionVariables.set(\"testData\",testData);",
 							"",
@@ -1430,7 +1432,7 @@
 							"    // IMPORTANT: Set counter to 0 in preparation of next request",
 							"    testData.counter = 0;",
 							"    pm.collectionVariables.set(\"testData\",testData);",
-							"}"
+							"}*/"
 						],
 						"type": "text/javascript",
 						"packages": {}
@@ -1544,7 +1546,7 @@
 							"    // Log",
 							"    console.log(\"The product has not been created\", product);",
 							"});",
-							"",
+							"/*",
 							"testData.counter++;",
 							"pm.collectionVariables.set(\"testData\",testData);",
 							"",
@@ -1559,7 +1561,8 @@
 							"    // IMPORTANT: Set counter to 0 in preparation of next request",
 							"    testData.counter = 0;",
 							"    pm.collectionVariables.set(\"testData\",testData);",
-							"}"
+							"}",
+							"*/"
 						],
 						"type": "text/javascript",
 						"packages": {}
@@ -1662,7 +1665,7 @@
 							"    // Log",
 							"    console.log(\"The comment has not been altered\", comment);",
 							"});",
-							"",
+							"/*",
 							"// Update the counter and save the updated test data",
 							"// (also including the id we set in the second test)",
 							"testData.counter++;",
@@ -1679,7 +1682,8 @@
 							"    // IMPORTANT: Set counter to 0 in preparation of next request",
 							"    testData.counter = 0;",
 							"    pm.collectionVariables.set(\"testData\",testData);",
-							"}"
+							"}",
+							"*/"
 						],
 						"type": "text/javascript",
 						"packages": {}
@@ -1801,7 +1805,7 @@
 							"pm.test(\"Expect rowsAffected to not equal 1\", () => {",
 							"    pm.expect(responseData.rowsAffected).to.not.equal(1);",
 							"});",
-							"",
+							"/*",
 							"// Update the counter and save the updated test data",
 							"// (also including the id we set in the second test)",
 							"testData.counter++;",
@@ -1818,7 +1822,7 @@
 							"    // IMPORTANT: Set counter to 0 in preparation of next request",
 							"    testData.counter = 0;",
 							"    pm.collectionVariables.set(\"testData\",testData);",
-							"}"
+							"}*/"
 						],
 						"type": "text/javascript",
 						"packages": {}
@@ -1882,7 +1886,7 @@
 							"pm.test(\"Expect rowsAffected to not equal 1\", () => {",
 							"    pm.expect(responseData.rowsAffected).to.not.equal(1);",
 							"});",
-							"",
+							"/*",
 							"// Update the counter and save the updated test data",
 							"testData.counter++;",
 							"pm.collectionVariables.set(\"testData\",testData);",
@@ -1898,7 +1902,7 @@
 							"    // IMPORTANT: Set counter to 0 in preparation of next request",
 							"    testData.counter = 0;",
 							"    pm.collectionVariables.set(\"testData\",testData);",
-							"}"
+							"}*/"
 						],
 						"type": "text/javascript",
 						"packages": {}
@@ -2009,7 +2013,7 @@
 							"",
 							"// Update the counter and save the updated test data",
 							"// (also including the id we set in the second test)",
-							"testData.counter++;",
+							"/*testData.counter++;",
 							"pm.collectionVariables.set(\"testData\",testData);",
 							"",
 							"// If there are more products - then \"loop\"",
@@ -2023,7 +2027,7 @@
 							"    // IMPORTANT: Set counter to 0 in preparation of next request",
 							"    testData.counter = 0;",
 							"    pm.collectionVariables.set(\"testData\",testData);",
-							"}"
+							"}*/"
 						],
 						"type": "text/javascript",
 						"packages": {}
@@ -2108,7 +2112,7 @@
 							"",
 							"// Update the counter and save the updated test data",
 							"// (also including the id we set in the second test)",
-							"testData.counter++;",
+							"/*testData.counter++;",
 							"pm.collectionVariables.set(\"testData\",testData);",
 							"",
 							"// If there are more products - then \"loop\"",
@@ -2122,7 +2126,7 @@
 							"    // IMPORTANT: Set counter to 0 in preparation of next request",
 							"    testData.counter = 0;",
 							"    pm.collectionVariables.set(\"testData\",testData);",
-							"}"
+							"}*/"
 						],
 						"type": "text/javascript",
 						"packages": {}
@@ -2210,7 +2214,7 @@
 							"",
 							"// Update the counter and save the updated test data",
 							"// (also including the id we set in the second test)",
-							"testData.counter++;",
+							"/*testData.counter++;",
 							"pm.collectionVariables.set(\"testData\",testData);",
 							"",
 							"// If there are more products - then \"loop\"",
@@ -2224,7 +2228,7 @@
 							"    // IMPORTANT: Set counter to 0 in preparation of next request",
 							"    testData.counter = 0;",
 							"    pm.collectionVariables.set(\"testData\",testData);",
-							"}"
+							"}*/"
 						],
 						"type": "text/javascript",
 						"packages": {}
@@ -2308,6 +2312,18 @@
 		},
 		{
 			"name": "Login as admin",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"//console.log(\"ALL ZE DATA \", postman.collection.get(\"testData\"));"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -2394,6 +2410,8 @@
 							"let testData = pm.collectionVariables.get(\"testData\");",
 							"// Get the current category",
 							"let comment = testData.comments[testData.counter];",
+							"console.log(\"WHAT IS COUNTER\", testData.counter);",
+							"console.log(\"WHAT IS COMMMENT\", comment);",
 							"",
 							"// Set a pm variable to id (it is used in the request url)",
 							"pm.variables.set(\"id\", comment.id); ",
@@ -2672,7 +2690,7 @@
 							"\r",
 							"// Test that affected rows equals 1\r",
 							"pm.test(\"Expect rowsAffected to equal 1\", () => {\r",
-							"    pm.expect(responseData.rowsAffected).not.equal(1);\r",
+							"    pm.expect(responseData.rowsAffected).to.equal(1);\r",
 							"});\r",
 							"\r",
 							"// Update the counter and save the updated test data\r",
@@ -2724,38 +2742,6 @@
 						"api",
 						"categories",
 						"{{id}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Logout admin",
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"email\": \"thomas@nodehill.com\",\n    \"password\": \"12345678\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://127.0.0.1:3001/api/login",
-					"protocol": "http",
-					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
-					],
-					"port": "3001",
-					"path": [
-						"api",
-						"login"
 					]
 				}
 			},

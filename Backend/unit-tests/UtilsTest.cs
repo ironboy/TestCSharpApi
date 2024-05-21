@@ -70,6 +70,7 @@ public class UtilsTest
         Assert.Equivalent(mockUsersNotInDb, result);
         Console.WriteLine("The test passed!");
     }
+    
     [Fact]
     public void TestRemoveMockUsers()
     {
@@ -82,6 +83,7 @@ public class UtilsTest
         Console.WriteLine($"The test also asserts that these two Arrs are the same");
         Assert.Equivalent(mockUsersInDb, deletedUsers);
     }
+
     [Fact]
     public void TestCountDomainsFromUserEmails()
     {
