@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Mvc.TagHelpers;
 using Xunit.Sdk;
 
 namespace WebApp;
@@ -62,7 +63,7 @@ public static class Utils
     public static Arr RemoveMockUsers()
     {
         Arr deletedUsers = new();
-        Arr mockUsersInDb = SQLQuery(@"SELECT * FROM users WHERE email LIKE '%1@%'");
+        Arr mockUsersInDb = SQLQuery("SELECT * FROM users WHERE email LIKE '%1@%'");
 
         foreach(var user in mockUsersInDb)
         {
@@ -75,5 +76,26 @@ public static class Utils
         WHERE email LIKE '%1@%'");
 
         return deletedUsers;
+    }
+    public static Obj CountDomainsFromUserEmails()
+    {
+        Arr domains = SQLQuery("SELECT * FROM users");
+
+        Obj countedDomains = Obj();
+
+        var domainsFromDb = domains.Map(user => user.email);
+
+        foreach(var dom in domainsFromDb)
+        {
+            string domain = dom.Split("@")[1];
+
+            if(!countedDomains.HasKey(domain))
+            {
+               countedDomains[domain] = 0;
+            }
+            countedDomains[domain]++;
+        }
+
+        return countedDomains;
     }
 }

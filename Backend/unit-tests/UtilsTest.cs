@@ -6,6 +6,10 @@ public class UtilsTest
     private static readonly Arr mockUsers = JSON.Parse(
         File.ReadAllText(FilePath("json", "mock-users.json"))
         );
+    private static readonly Arr mockDomains = JSON.Parse(
+        File.ReadAllText(FilePath("json", "mock-domains.json"))
+    );
+
    [Fact]
     public void TestSumInt()
     {
@@ -69,18 +73,32 @@ public class UtilsTest
     [Fact]
     public void TestRemoveMockUsers()
     {
-        Arr allUsersInDb = SQLQuery("SELECT * FROM users WHERE email LIKE '%1@%'");
+        Arr mockUsersInDb = SQLQuery("SELECT email FROM users WHERE email LIKE '%1@%'");
 
         Arr deletedUsers = Utils.RemoveMockUsers();
 
-        Console.WriteLine($"The amount of users found in {allUsersInDb.Length} should");
+        Console.WriteLine($"The amount of users found in {mockUsersInDb.Length} should");
         Console.WriteLine($"be same as the ones in {deletedUsers.Length}");
         Console.WriteLine($"The test also asserts that these two Arrs are the same");
-        Assert.Equivalent(allUsersInDb, deletedUsers);
-
-
+        Assert.Equivalent(mockUsersInDb, deletedUsers);
     }
+    [Fact]
+    public void TestCountDomainsFromUserEmails()
+    {
+        foreach (var user in mockDomains)
+        {
+            var insertMockDomains = SQLQueryOne(
+                @"INSERT INTO users(firstName,lastName,email,password)
+                VALUES($firstName, $lastName, $email, $password)
+            ", user);
+        }
 
-    // Now write the two last ones yourself!
-    // See: https://sys23m-jensen.lms.nodehill.se/uploads/videos/2021-05-18T15-38-54/sysa-23-presentation-2024-05-02-updated.html#8
+        Obj countDomainsMethod = Utils.CountDomainsFromUserEmails();
+
+        Console.WriteLine($"The number of mock domains {mockDomains.Length} should");
+        Console.WriteLine($"match the ones found in Utils {countDomainsMethod["GrbicDomain.com"]}");
+        Assert.Equivalent(mockDomains.Length, countDomainsMethod["GrbicDomain.com"]);
+
+        var cleanUp = SQLQuery("DELETE * FROM users WHERE email LIKE '%GrbicDomain.com%'");
+    }
 }

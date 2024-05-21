@@ -15,4 +15,4 @@ Globals = Obj(new
 
 WebApp.Utils.CreateMockUsers();
 UtilsTest e = new();
-e.TestRemoveMockUsers();
+e.TestCountDomainsFromUserEmails();

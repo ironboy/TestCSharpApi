@@ -1,0 +1,20 @@
+[
+  {
+    "firstName": "Ulises",
+    "lastName": "Lyal",
+    "email": "ulyal0@GrbicDomain.com",
+    "password": "$2a$13$VNkfrT9VvRJeX3gxTcNYsOTwwsMzKuXqJs2CriAyvZ/c2m/3wBH1a"
+  },
+  {
+    "firstName": "Skippy",
+    "lastName": "Greenhaugh",
+    "email": "sgreenhaugh1@GrbicDomain.com",
+    "password": "$2a$13$QGmixZ4aOkTe/GxnjFA.JOc.PjVur7lT8NgLB2JPbEZrhtPbAJZZi"
+  },
+  {
+    "firstName": "Marris",
+    "lastName": "Teligin",
+    "email": "mteligin2@GrbicDomain.com",
+    "password": "$2a$13$k6i6YSD4lwr6xaCavcoYgOmXaKvappVQAEyGqS87FPYaQPl3EE0uG"
+  }
+]
