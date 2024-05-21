@@ -61,16 +61,13 @@ public static class Utils
     }
     public static Arr RemoveMockUsers()
     {
-        Arr deletedUsers = SQLQuery(@"
-        SELECT * 
-        FROM users 
-        WHERE email
-        LIKE '%1@%'");
+        Arr deletedUsers = new();
+        Arr mockUsersInDb = SQLQuery(@"SELECT * FROM users WHERE email LIKE '%1@%'");
 
-        foreach(var user in deletedUsers)
+        foreach(var user in mockUsersInDb)
         {
-
             user.Delete("password");
+            deletedUsers.Push(user);
         }
 
         var result = SQLQuery(@"

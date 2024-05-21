@@ -69,21 +69,14 @@ public class UtilsTest
     [Fact]
     public void TestRemoveMockUsers()
     {
-        Arr allUsersInDb = SQLQuery("SELECT email FROM users WHERE email LIKE '%1@%'");
-
-        Arr emailsInDb = allUsersInDb.Map(user => user.email.Contains("1@"));
-
-        Arr mockUserEmail = mockUsers.Filter(
-            user => user.email.Contains("1@"));
- 
-        Log(mockUserEmail);
+        Arr allUsersInDb = SQLQuery("SELECT * FROM users WHERE email LIKE '%1@%'");
 
         Arr deletedUsers = Utils.RemoveMockUsers();
 
-        Console.WriteLine($"The amount of users found in {emailsInDb.Length} should");
+        Console.WriteLine($"The amount of users found in {allUsersInDb.Length} should");
         Console.WriteLine($"be same as the ones in {deletedUsers.Length}");
         Console.WriteLine($"The test also asserts that these two Arrs are the same");
-        Assert.Equivalent(emailsInDb, deletedUsers);
+        Assert.Equivalent(allUsersInDb, deletedUsers);
 
 
     }
