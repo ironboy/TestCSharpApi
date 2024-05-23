@@ -1,4 +1,6 @@
-{
+// Test data to use, pasted from our json file with test data
+let testData = {
+  "counter": 0,
   "categories": [
     {
       "name": "Computers",
@@ -124,3 +126,7 @@
     }
   ]
 }
+// Set the test data as a collection variable
+// (collection variables are available
+//. for all requests in a colleciton)
+pm.collectionVariables.set("testData",testData);
