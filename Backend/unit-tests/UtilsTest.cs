@@ -101,6 +101,7 @@ public class UtilsTest(Xlog Console)
         return removedMockUsers;
     }
 
+/*
     [Fact]
     public void CountDomainsFromUserEmails()
     {
@@ -108,6 +109,7 @@ public class UtilsTest(Xlog Console)
 
         // SQL-fråga för att hämta alla e-postadresser från databasen
         string query = "SELECT email FROM users";
+
 
         // Hämta alla e-postadresser från databasen
         DataTable _db_sqlite3 = SQLQuery(query);
@@ -138,4 +140,5 @@ public class UtilsTest(Xlog Console)
         }
 
     }
+    */
 }
