@@ -1,4 +1,6 @@
 // Global settings
+using System.Net;
+
 Globals = Obj(new
 {
     debugOn = true,
@@ -12,3 +14,9 @@ Globals = Obj(new
 });
 
 Server.Start();
+
+// WebApp.Utils.CreateMockUsers();
+
+// bWebApp.Utils.CountDomainsFromUserEmails();
+
+// WebApp.Utils.DeleteMockUsers();

@@ -1,0 +1,132 @@
+// Test data to use, pasted from our json file with test data
+let testData = {
+  "counter": 0,
+  "categories": [
+    {
+      "name": "Computers",
+      "description": "Buy a computer, why not?."
+    },
+    {
+      "name": "Drugs",
+      "description": "They do be drugs."
+    },
+    {
+      "name": "Energy Drinks",
+      "description": "WE DRINK."
+    }
+  ],
+  "products": [
+    {
+      "name": "Laptop",
+      "description": "Its a laptop.",
+      "price": 100,
+      "categoryId": "Computers"
+    },
+    {
+      "name": "Monitor",
+      "description": "Now you can look at cute cats.",
+      "price": 50,
+      "categoryId": "Computers"
+    },
+    {
+      "name": "Graphics card",
+      "description": "Needed to look at cute cats.",
+      "price": 1100,
+      "categoryId": "Computers"
+    },
+    {
+      "name": "Cocain",
+      "description": "No no snow.",
+      "price": 100,
+      "categoryId": "Drugs"
+    },
+    {
+      "name": "Weed",
+      "description": "Be a cow, get some gras.",
+      "price": 50,
+      "categoryId": "Drugs"
+    },
+    {
+      "name": "Black tar heroin",
+      "description": "The blackiest and tariest heroin.",
+      "price": 200,
+      "categoryId": "Drugs"
+    },
+    {
+      "name": "Red Bull",
+      "description": "Gives you energy.",
+      "price": 100,
+      "categoryId": "Energy Drinks"
+    },
+        {
+      "name": "Monster",
+      "description": "Monster.",
+      "price": 100,
+      "categoryId": "Energy Drinks"
+    },
+    {
+      "name": "Power King",
+      "description": "Become a King.",
+      "price": 200,
+      "categoryId": "Energy Drinks"
+    }
+  ],
+  "commentsAdminMakes": [
+    {
+      "comment": "Tasty!",
+      "productId": "Red Bull",
+      "userId": 3
+    },
+    {
+      "comment": "Battery dies to fast!",
+      "productId": "Laptop",
+      "userId": 3
+    },
+    {
+      "comment": "Great, would pay double!",
+      "productId": "Weed",
+      "userId": 3
+    }
+  ],
+    "commentsUserMakes": [
+    {
+      "comment": "Perfect for friday nights!",
+      "productId": "Cocain",
+      "userId": 5
+    },
+    {
+      "comment": "Perfect for a late nights!",
+      "productId": "Monster",
+      "userId": 5
+    },
+    {
+      "comment": "Fast and great picture quality!",
+      "productId": "Laptop",
+      "userId": 5
+    },
+        {
+      "comment": "Terrible drink!",
+      "productId": "Power King",
+      "userId": 5
+    },
+    {
+      "comment": "Will make you forget all your worries!",
+      "productId": "Black tar heroin",
+      "userId": 5
+    },
+    {
+      "comment": "Fast!",
+      "productId": "Laptop",
+      "userId": 5
+    },
+    {
+      "comment": "Amazing quality!",
+      "productId": "Monitor",
+      "userId": 5
+    }
+  ]
+}
+// Set the test data as a collection variable
+// (collection variables are available
+//. for all requests in a colleciton)
+pm.collectionVariables.set("testData",testData);
