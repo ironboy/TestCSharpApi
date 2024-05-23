@@ -42,9 +42,6 @@ public static class Utils
         Arr successFullyWrittenUsers = Arr();
         foreach (var user in mockUsers)
         {
-            string[] half = user.email.Split("@");
-            user.email = half[0] + "1@" + half[1];
-
             var result = SQLQueryOne(
                 @"INSERT INTO users(firstName,lastName,email,password)
                 VALUES($firstName, $lastName, $email, $password)
@@ -62,18 +59,18 @@ public static class Utils
     }
     public static Arr RemoveMockUsers()
     {
-        Arr deletedUsers = new();
-        Arr mockUsersInDb = SQLQuery("SELECT * FROM users WHERE email LIKE '%1@%'");
+        Arr deletedUsers = Arr();
 
-        foreach(var user in mockUsersInDb)
+        foreach(var user in mockUsers)
         {
             user.Delete("password");
-            deletedUsers.Push(user);
+            
+            var removeUser = SQLQueryOne("DELETE FROM users WHERE email = $email", user);
+            if(removeUser.rowsAffected == 1)
+            {
+                deletedUsers.Push(user);
+            }
         }
-
-        var result = SQLQuery(@"
-        DELETE FROM users
-        WHERE email LIKE '%1@%'");
 
         return deletedUsers;
     }

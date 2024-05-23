@@ -70,37 +70,53 @@ public class UtilsTest
         Assert.Equivalent(mockUsersNotInDb, result);
         Console.WriteLine("The test passed!");
     }
-    
+
     [Fact]
     public void TestRemoveMockUsers()
     {
-        Arr mockUsersInDb = SQLQuery("SELECT email FROM users WHERE email LIKE '%1@%'");
+        Arr mockUsersFromDb = SQLQuery("SELECT * FROM users");
+        Arr mockUsersShouldBeDeleted = Arr();
+
+        foreach(var user in mockUsersFromDb)
+        {
+            foreach(var mock in mockUsers)
+            if (mock.email == user.email)
+            {
+                user.Delete("password");
+                mockUsersShouldBeDeleted.Push(mock);
+            }
+        }
 
         Arr deletedUsers = Utils.RemoveMockUsers();
 
-        Console.WriteLine($"The amount of users found in {mockUsersInDb.Length} should");
+        Console.WriteLine($"The amount of users found in {mockUsersShouldBeDeleted.Length} should");
         Console.WriteLine($"be same as the ones in {deletedUsers.Length}");
         Console.WriteLine($"The test also asserts that these two Arrs are the same");
-        Assert.Equivalent(mockUsersInDb, deletedUsers);
+        Assert.Equivalent(deletedUsers, mockUsersShouldBeDeleted);
     }
 
     [Fact]
     public void TestCountDomainsFromUserEmails()
     {
-        foreach (var user in mockDomains)
+
+        Arr countDomainsUsingQuery = SQLQuery(@"SELECT 
+        SUBSTR(email, INSTR(email, '@') + 1) AS domain, 
+        COUNT(*) AS domain_count
+        FROM users
+        GROUP BY domain
+        ORDER BY domain_count DESC;");
+
+        Obj countDomainsFromQuery = Obj();
+
+        foreach(var row in countDomainsUsingQuery)
         {
-            var insertMockDomains = SQLQueryOne(
-                @"INSERT INTO users(firstName,lastName,email,password)
-                VALUES($firstName, $lastName, $email, $password)
-            ", user);
+            countDomainsFromQuery[row.domain] = row.domain_count;
         }
 
         Obj countDomainsMethod = Utils.CountDomainsFromUserEmails();
 
-        Console.WriteLine($"The number of mock domains {mockDomains.Length} should");
-        Console.WriteLine($"match the ones found in Utils {countDomainsMethod["GrbicDomain.com"]}");
-        Assert.Equivalent(mockDomains.Length, countDomainsMethod["GrbicDomain.com"]);
+        Console.WriteLine($"The number of mock domains"); 
+        Assert.Equivalent(countDomainsMethod, countDomainsFromQuery); 
 
-        var cleanUp = SQLQuery("DELETE * FROM users WHERE email LIKE '%GrbicDomain.com%'");
     }
 }
