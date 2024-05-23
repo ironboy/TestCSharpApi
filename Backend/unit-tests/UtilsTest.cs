@@ -73,6 +73,7 @@ public class UtilsTest(Xlog Console)
         var result = Utils.CreateMockUsers();
         // Assert that the CreateMockUsers only return
         // newly created users in the db
+
         Console.WriteLine($"The test expected that {mockUsersNotInDb.Length} users should be added.");
         Console.WriteLine($"And {result.Length} users were added.");
         Console.WriteLine("The test also asserts that the users added " +
@@ -140,5 +141,3 @@ public class UtilsTest(Xlog Console)
         }
 
     }
-    */
-}
