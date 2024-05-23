@@ -10,6 +10,7 @@ public class UtilsTest
         File.ReadAllText(FilePath("json", "mock-domains.json"))
     );
 
+
    [Fact]
     public void TestSumInt()
     {

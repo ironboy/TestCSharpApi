@@ -1,10 +1,12 @@
+
 name: .NET Core Desktop
 
 on:
   push:
-    branches: [ "feature-2024-05-16" ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ "feature-2024-05-16" ]
+    branches: [ "main" ]
+
 
 jobs:
 
@@ -12,6 +14,7 @@ jobs:
 
     strategy:
       matrix:
+
         configuration: [Debug]
 
     runs-on: windows-latest  
