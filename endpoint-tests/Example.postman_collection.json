@@ -1,0 +1,867 @@
+{
+	"info": {
+		"_postman_id": "76648907-01ac-4408-a224-cf3a35ca6ed4",
+		"name": "Example",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "34762365"
+	},
+	"item": [
+		{
+			"name": "Login as admin",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"thomas@nodehill.com\",\n    \"password\": \"12345678\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:3001/api/login",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "3001",
+					"path": [
+						"api",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Setup all test data",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// Test data to use, pasted from our JSON file with test data",
+							"let testData = {",
+							"  \"counter\": 0,",
+							"    \"categories\": [",
+							"        {",
+							"            \"name\": \"Lyx\",",
+							"            \"description\": \"Våra mer lyxiga erbjudanden.\"",
+							"        },",
+							"        {",
+							"            \"name\": \"Prisvänligt\",",
+							"            \"description\": \"Våra prisvänligaste produkter.\"",
+							"        },",
+							"        {",
+							"            \"name\": \"Vardag\",",
+							"            \"description\": \"Saker som underlättar din vardag\"",
+							"        },",
+							"        {",
+							"            \"name\": \"Grönsaker\",",
+							"            \"description\": \"Färska grönsaker.\"",
+							"        },",
+							"        {",
+							"            \"name\": \"Frukter\",",
+							"            \"description\": \"Färska frukter.\"",
+							"        },",
+							"    ],",
+							"    \"products\": [",
+							"    {",
+							"        \"name\": \"Rysk kaviar\",",
+							"        \"description\": \"Den finaste kaviaren, fast inte från Ryssland egentligen.\",",
+							"        \"price\": 500,",
+							"        \"categoryId\": \"Lyx\"",
+							"    },",
+							"    {",
+							"        \"name\": \"Champagne\",",
+							"        \"description\": \"Husets egen blandning.\",",
+							"        \"price\": 999,",
+							"        \"categoryId\": \"Lyx\"",
+							"    },",
+							"    {",
+							"        \"name\": \"Röd vin\",",
+							"        \"description\": \"Det finaste och dyraste i Sverige\",",
+							"        \"price\": 999,",
+							"        \"categoryId\": \"Lyx\"",
+							"    },",
+							"    {",
+							"        \"name\": \"Basic tomatsås\",",
+							"        \"description\": \"En enkel men god tomatsås\",",
+							"        \"price\": 10,",
+							"        \"categoryId\": \"Prisvänligt\"",
+							"    },",
+							"    {",
+							"        \"name\": \"Mjöliga makaroner\",",
+							"        \"description\": \"Ganska mjöliga men energirika makaroner\",",
+							"        \"price\": 15,",
+							"        \"categoryId\": \"Prisvänligt\"",
+							"    },",
+							"    {",
+							"        \"name\": \"Oliver\",",
+							"        \"description\": \"Goda oliver\",",
+							"        \"price\": 10,",
+							"        \"categoryId\": \"Prisvänligt\"",
+							"    },",
+							"    {",
+							"        \"name\": \"potatis\",",
+							"        \"description\": \"Fina knölar\",",
+							"        \"price\": 20,",
+							"        \"categoryId\": \"Vardag\"",
+							"    },",
+							"    {",
+							"        \"name\": \"Gul lök\",",
+							"        \"description\": \"En sak som garanterat får dig att gråta.\",",
+							"        \"price\": 30,",
+							"        \"categoryId\": \"Vardag\"",
+							"    },",
+							"    {",
+							"        \"name\": \"Ris\",",
+							"        \"description\": \"Alltid najs med ris\",",
+							"        \"price\": 25,",
+							"        \"categoryId\": \"Vardag\"",
+							"    },",
+							"    {",
+							"        \"name\": \"Morot\",",
+							"        \"description\": \"En orange rotfrukt\",",
+							"        \"price\": 10,",
+							"        \"categoryId\": \"Grönsaker\"",
+							"    },",
+							"    {",
+							"        \"name\": \"Tomat\",",
+							"        \"description\": \"En mångsidig grönsak som används till allt.\",",
+							"        \"price\": 30,",
+							"        \"categoryId\": \"Grönsaker\"",
+							"    },",
+							"    {",
+							"        \"name\": \"Aubergine\",",
+							"        \"description\": \"En lila grönsak som är populär i många rätter.\",",
+							"        \"price\": 20,",
+							"        \"categoryId\": \"Grönsaker\"",
+							"    },",
+							"    {",
+							"        \"name\": \"Äpple\",",
+							"        \"description\": \"En mångsidig frukt som finns i olika sorter och smaker.\",",
+							"        \"price\": 15,",
+							"        \"categoryId\": \"frukter\"",
+							"    },",
+							"    {",
+							"        \"name\": \"Kiwi\",",
+							"        \"description\": \"Grön frukt med hög C-Vitamininnehåll.\",",
+							"        \"price\": 20,",
+							"        \"categoryId\": \"frukter\"",
+							"    }",
+							"],",
+							"    \"comments\": [{",
+							"            \"comment\": \"Mycket god champagne!\",",
+							"            \"productId\": \"Champagne\",",
+							"            \"userId\": 3",
+							"        }",
+							"    ]",
+							"};",
+							"",
+							"// Set the test data as a collection variable",
+							"pm.collectionVariables.set(\"testData\", testData);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Not doing any tests here"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:3001",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "3001"
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Setup all test data dynamically",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// Hämta testdatan från collection variables",
+							"let testData = pm.collectionVariables.get(\"testData\");",
+							"",
+							"// Kontrollera att testdatan har hämtats korrekt",
+							"if (testData) {",
+							"    // Extrahera kategorier, produkter och kommentarer från testdatan",
+							"    let categoriesData = testData.categories || [];",
+							"    let productsData = testData.products || [];",
+							"    let commentsData = testData.comments || [];",
+							"",
+							"    // Funktion för att få kategori-id från kategorinamn",
+							"    function getCategoryID(categoryName) {",
+							"        return categoriesData.find(category => category.name === categoryName)?.id;",
+							"    }",
+							"",
+							"    // Funktion för att få produkt-id från produktens namn",
+							"    function getProductID(productName) {",
+							"        return productsData.find(product => product.name === productName)?.id;",
+							"    }",
+							"",
+							"    // Loopa igenom kommentarerna och uppdatera productId med produkt-id",
+							"    commentsData.forEach(comment => {",
+							"        comment.productId = getProductID(comment.productId);",
+							"    });",
+							"",
+							"    // Loopa igenom produkterna och uppdatera categoryId med kategori-id",
+							"    productsData.forEach(product => {",
+							"        product.categoryId = getCategoryID(product.categoryId);",
+							"    });",
+							"",
+							"    // Uppdatera testdatan i collection variables",
+							"    pm.collectionVariables.set(\"comments\", JSON.stringify(commentsData));",
+							"    pm.collectionVariables.set(\"products\", JSON.stringify(productsData));",
+							"} else {",
+							"    console.log(\"Failed to retrieve test data from collection variables.\");",
+							"}"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Not doing any tests here"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:3001",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "3001"
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create categories",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Retrieve the test data from collection variables",
+							"let testData = pm.collectionVariables.get(\"testData\");",
+							"",
+							"// Get the current category based on the counter value",
+							"let category = testData.categories[testData.counter];",
+							"",
+							"// Read the response from the request",
+							"let response = pm.response;",
+							"// Parse the response JSON data",
+							"let responseData = pm.response.json();",
+							"",
+							"// Test to ensure we receive a 200 status code (successful request)",
+							"pm.test(\"We should get an ok (code 200) back\", () => {",
+							"    pm.expect(response.code).to.equal(200);",
+							"});",
+							"",
+							"// Test to ensure the affected rows equals 1",
+							"pm.test(\"Expect rowsAffected to equal 1\", () => {",
+							"    pm.expect(responseData.rowsAffected).to.equal(1);",
+							"});",
+							"",
+							"// Test to ensure we receive an insertId back",
+							"// Also, add the insertId to the current category in our test data for future tests",
+							"pm.test(\"We should get an insertId back\", () => {",
+							"    pm.expect(responseData.insertId).to.be.a('number');",
+							"    // Add the id property to the current category using the insertId from the response",
+							"    category.id = responseData.insertId;",
+							"    // Log the newly created category",
+							"    console.log(\"The category has been created\", category);",
+							"});",
+							"",
+							"// Update the counter and save the updated test data, including the new category id",
+							"testData.counter++;",
+							"pm.collectionVariables.set(\"testData\", testData);",
+							"",
+							"// If there are more categories, set the next request to \"Create categories\"",
+							"if (testData.categories[testData.counter]) {",
+							"    pm.execution.setNextRequest(\"Create categories\");",
+							"} else {",
+							"    // Otherwise, log \"All done\" and reset the counter for future requests",
+							"    console.log(\"All categories have been created.\");",
+							"    testData.counter = 0;",
+							"    pm.collectionVariables.set(\"testData\", testData);",
+							"}",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// Retrieve the test data from the collection variables",
+							"let testData = pm.collectionVariables.get(\"testData\");",
+							"",
+							"// Get the current category based on the counter value",
+							"let category = testData.categories[testData.counter];",
+							"",
+							"// Postman variables have a scope of one request",
+							"// Setting two variables to be used in the request body",
+							"pm.variables.set(\"name\", category.name);",
+							"pm.variables.set(\"description\", category.description);",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"{{name}}\",\n    \"description\": \"{{description}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:3001/api/categories",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "3001",
+					"path": [
+						"api",
+						"categories"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get categories",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// Retrieve the test data from the collection variables",
+							"let testData = pm.collectionVariables.get(\"testData\");",
+							"",
+							"// Get the current category based on the counter value",
+							"let category = testData.categories[testData.counter];",
+							"",
+							"// Set a Postman variable to the category ID (it will be used in the request URL)",
+							"pm.variables.set(\"id\", category.id);",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Hämta testdata från samlingsvariablerna",
+							"let testData = pm.collectionVariables.get(\"testData\");",
+							"",
+							"// Hämta den aktuella kategorin baserat på räknarvärdet",
+							"let category = testData.categories[testData.counter];",
+							"",
+							"// Läs svaret från API-anropet",
+							"let response = pm.response;",
+							"",
+							"// Läs svardata i JSON-format",
+							"let responseData = pm.response.json();",
+							"",
+							"// Testa att vi får en 200 statuskod tillbaka (vilket innebär att anropet var framgångsrikt)",
+							"pm.test(\"We should get an ok (code 200) back\", () => {",
+							"    pm.expect(response.code).to.equal(200);",
+							"});",
+							"",
+							"// Testa att REST-API:et returnerar samma data som vår testdata för kategorin",
+							"pm.test(\"Test that the correct category data is returned\", () => {",
+							"    console.log(\"category\", category);",
+							"    console.log(\"responseData\", responseData);",
+							"    pm.expect(category).to.deep.equal(responseData);",
+							"});",
+							"",
+							"// Uppdatera räknaren och spara den uppdaterade testdatan",
+							"testData.counter++;",
+							"pm.collectionVariables.set(\"testData\", testData);",
+							"",
+							"// Om det finns fler kategorier, \"loopa\" genom dem med setNextRequest",
+							"if (testData.categories[testData.counter]) {",
+							"    pm.execution.setNextRequest(\"Get categories\");",
+							"}",
+							"// Annars logga \"All done\" och återställ räknaren till 0 för nästa förfrågan",
+							"else {",
+							"    console.log(\"All categories have been read correctly.\");",
+							"    // VIKTIGT: Återställ räknaren till 0 i förberedelse för nästa förfrågan",
+							"    testData.counter = 0;",
+							"    pm.collectionVariables.set(\"testData\", testData);",
+							"}",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:3001/api/categories/{{id}}",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "3001",
+					"path": [
+						"api",
+						"categories",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Change categories",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Get the test data",
+							"let testData = pm.collectionVariables.get(\"testData\");",
+							"",
+							"// Get the current category",
+							"let category = testData.categories[testData.counter];",
+							"",
+							"// Read the response",
+							"let response = pm.response;",
+							"",
+							"// Read the response data",
+							"let responseData = pm.response.json();",
+							"",
+							"// Test that we get a 200 code (ok request) back",
+							"pm.test(\"We should get an ok (code 200) back\", () => {",
+							"    pm.expect(response.code).to.equal(200);",
+							"});",
+							"",
+							"// Test that affected rows equals 1",
+							"pm.test(\"Expect rowsAffected to equal 1\", () => {",
+							"    pm.expect(responseData.rowsAffected).to.equal(1);",
+							"});",
+							"",
+							"// Update the counter and save the updated test data",
+							"testData.counter++;",
+							"pm.collectionVariables.set(\"testData\", testData);",
+							"",
+							"// If there are more categories, \"loop\" through them using setNextRequest",
+							"if (testData.categories[testData.counter]) {",
+							"    pm.execution.setNextRequest(\"Change categories\");",
+							"}",
+							"// Otherwise, log \"All done\"",
+							"else {",
+							"    console.log(\"All category-decriptions have been changed.\");",
+							"    // IMPORTANT: Set counter to 0 in preparation of the next request",
+							"    testData.counter = 0;",
+							"    pm.collectionVariables.set(\"testData\", testData);",
+							"}",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// Hämta testdatan från samlingsvariablerna",
+							"let testData = pm.collectionVariables.get(\"testData\");",
+							"",
+							"// Hämta den aktuella kategorin baserat på räknarvärdet",
+							"let category = testData.categories[testData.counter];",
+							"",
+							"// Ändra beskrivningen och spara till collectionVariables",
+							"category.description += \" Some extra text in the description.\";",
+							"pm.collectionVariables.set(\"testData\", testData);",
+							"",
+							"// Sätt en pm-variabel till id (den används i begäranens URL)",
+							"pm.variables.set(\"id\", category.id);",
+							"",
+							"// Sätt en pm-variabel till beskrivningen (den används i begäranens body)",
+							"pm.variables.set(\"description\", category.description);",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"description\": \"{{description}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:3001/api/categories/{{id}}",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "3001",
+					"path": [
+						"api",
+						"categories",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get categories after change",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// Hämta testdatan från samlingsvariablerna",
+							"let testData = pm.collectionVariables.get(\"testData\");",
+							"",
+							"// Hämta den aktuella kategorin baserat på räknarvärdet",
+							"let category = testData.categories[testData.counter];",
+							"",
+							"// Sätt en pm-variabel till id (den används i begäranens URL)",
+							"pm.variables.set(\"id\", category.id);",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Hämta testdatan från samlingsvariablerna",
+							"let testData = pm.collectionVariables.get(\"testData\");",
+							"",
+							"// Hämta den aktuella kategorin baserat på räknarvärdet",
+							"let category = testData.categories[testData.counter];",
+							"",
+							"// Läs svaret",
+							"let response = pm.response;",
+							"",
+							"// Läs svardata",
+							"let responseData = pm.response.json();",
+							"",
+							"// Testa att vi får tillbaka kod 200 (ok-request)",
+							"pm.test(\"Vi bör få tillbaka kod 200 (ok)\", () => {",
+							"    pm.expect(response.code).to.equal(200);",
+							"});",
+							"",
+							"// Testa att REST-API:et returnerar samma data",
+							"// som våra testdata för kategorin",
+							"pm.test(\"Testa att korrekt kategoridata returneras\", () => {",
+							"    console.log(\"Kategori:\", category);",
+							"    console.log(\"Svardata:\", responseData);",
+							"    pm.expect(category).to.deep.equal(responseData);",
+							"});",
+							"",
+							"// Uppdatera räknaren och spara uppdaterade testdata",
+							"testData.counter++;",
+							"pm.collectionVariables.set(\"testData\", testData);",
+							"",
+							"// Om det finns fler kategorier - \"loopa\" igenom dem med setNextRequest",
+							"if (testData.categories[testData.counter]) {",
+							"    pm.execution.setNextRequest(\"Hämta kategorier efter ändring\");",
+							"}",
+							"// Annars logga \"Allt klart\"",
+							"else {",
+							"    console.log(\"Alla kategorier har lästs in korrekt efter ändringen.\");",
+							"    // VIKTIGT: Återställ räknaren till 0 inför nästa begäran",
+							"    testData.counter = 0;",
+							"    pm.collectionVariables.set(\"testData\", testData);",
+							"}",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:3001/api/categories/{{id}}",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "3001",
+					"path": [
+						"api",
+						"categories",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create products",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// Hämta testdatan från samlingsvariablerna",
+							"let testData = pm.collectionVariables.get(\"testData\");",
+							"",
+							"// Hämta de aktuella produkterna",
+							"let product = testData.products[testData.counter];",
+							"",
+							"// Ersätt kategorinamnet i egenskapen categoryId",
+							"// med den faktiska id:t för kategorin",
+							"",
+							"// Hitta den korrekta kategorin",
+							"let categoryWithMatchingName = testData.categories.find(category => {",
+							"    return category.name == product.categoryId;",
+							"});",
+							"",
+							"// Ändra egenskapen categoryId för produkten",
+							"// till id:t för den matchande kategorin",
+							"product.categoryId = categoryWithMatchingName.id;",
+							"",
+							"// Spara ändringarna i våra testdata (det nya värdet för categoryId)",
+							"pm.collectionVariables.set(\"testData\", testData);",
+							"",
+							"// pm-variabler har en omfattning av en begäran",
+							"// sätter fyra variabler som används i kroppen",
+							"pm.variables.set(\"name\", product.name);",
+							"pm.variables.set(\"description\", product.description);",
+							"pm.variables.set(\"price\", product.price);",
+							"pm.variables.set(\"categoryId\", product.categoryId);",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Hämta testdatan från samlingsvariablerna",
+							"let testData = pm.collectionVariables.get(\"testData\");",
+							"",
+							"// Hämta den aktuella produkten",
+							"let product = testData.products[testData.counter];",
+							"",
+							"// Läs svaret",
+							"let response = pm.response;",
+							"",
+							"// Läs svarsdatan",
+							"let responseData = pm.response.json();",
+							"",
+							"// Testa att vi får tillbaka en kod 200 (ok begäran)",
+							"pm.test(\"Vi ska få tillbaka en ok (kod 200)\",()=> {",
+							"    pm.expect(response.code).to.equal(200);",
+							"});",
+							"",
+							"// Testa att antalet påverkade rader är 1",
+							"pm.test(\"Förvänta att antalet påverkade rader är 1\", () => {",
+							"    pm.expect(responseData.rowsAffected).to.equal(1);",
+							"});",
+							"",
+							"// Testa att vi får tillbaka ett insertId",
+							"// och lägg även till id:t i vår testdata (för framtida tester)",
+							"pm.test(\"Vi ska få tillbaka ett insertId\", () => {",
+							"    pm.expect(responseData.insertId).to.be.a('number');",
+							"    // Lägg till egenskapen id till produkten med",
+							"    // id:t som mottogs från REST-api:et",
+							"    product.id = responseData.insertId;",
+							"    // Logga",
+							"    console.log(\"Produkten har skapats\", product);",
+							"});",
+							"",
+							"// Uppdatera räknaren och spara den uppdaterade testdatan",
+							"// (inklusive id:t vi satte i det andra testet)",
+							"testData.counter++;",
+							"pm.collectionVariables.set(\"testData\", testData);",
+							"",
+							"// Om det finns fler produkter - då \"loopa\"",
+							"// igenom dem med hjälp av setNextRequest",
+							"if (testData.products[testData.counter]) {",
+							"    pm.execution.setNextRequest(\"Skapa produkter\");",
+							"}",
+							"// Annars logga \"Alla klara\"",
+							"else {",
+							"    console.log(\"Alla produkter har skapats.\");",
+							"    // VIKTIGT: Återställ räknaren till 0 inför nästa begäran",
+							"    testData.counter = 0;",
+							"    pm.collectionVariables.set(\"testData\", testData);",
+							"}",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"{{name}}\",\n    \"description\": \"{{description}}\",\n    \"price\": {{price}},\n    \"categoryId\": {{categoryId}}\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:3001/api/products",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "3001",
+					"path": [
+						"api",
+						"products"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "data",
+			"value": ""
+		},
+		{
+			"key": "testData",
+			"value": ""
+		},
+		{
+			"key": "categories",
+			"value": "[\n    {\"name\": \"Lyx\", \"description\": \"Våra mer lyxiga erbjudanden.\"},\n    {\"name\": \"Prisvänligt\", \"description\": \"Våra prisvänligaste produkter.\"},\n    {\"name\": \"Vardag\", \"description\": \"Saker som underlättar din vardag\"},\n    {\"name\": \"Grönsaker\", \"description\": \"Färska grönsaker.\"},\n    {\"name\": \"Frukter\", \"description\": \"Färska frukter.\"}\n]",
+			"type": "string",
+			"disabled": true
+		},
+		{
+			"key": "products",
+			"value": "[\n    {\"name\": \"Rysk kaviar\", \"description\": \"Den finaste kaviaren, fast inte från Ryssland egentligen.\", \"price\": 500, \"categoryId\": \"Lyx\"},\n    {\"name\": \"Champagne\", \"description\": \"Husets egen blandning.\", \"price\": 999, \"categoryId\": \"Lyx\"},\n    {\"name\": \"Röd vin\", \"description\": \"Det finaste och dyraste i Sverige\", \"price\": 999, \"categoryId\": \"Lyx\"},\n    {\"name\": \"Basic tomatsås\", \"description\": \"En enkel men god tomatsås\", \"price\": 10, \"categoryId\": \"Prisvänligt\"},\n    {\"name\": \"Mjöliga makaroner\", \"description\": \"Ganska mjöliga men energirika makaroner\", \"price\": 15, \"categoryId\": \"Prisvänligt\"},\n    {\"name\": \"Oliver\", \"description\": \"Goda oliver\", \"price\": 10, \"categoryId\": \"Prisvänligt\"},\n    {\"name\": \"potatis\", \"description\": \"Fina knölar\", \"price\": 20, \"categoryId\": \"Vardag\"},\n    {\"name\": \"Gul lök\", \"description\": \"En sak som garanterat får dig att gråta.\", \"price\": 30, \"categoryId\": \"Vardag\"},\n    {\"name\": \"Ris\", \"description\": \"Alltid najs med ris\", \"price\": 25, \"categoryId\": \"Vardag\"},\n    {\"name\": \"Morot\", \"description\": \"En orange rotfrukt\", \"price\": 10, \"categoryId\": \"Grönsaker\"},\n    {\"name\": \"Tomat\", \"description\": \"En mångsidig grönsak som används till allt.\", \"price\": 30, \"categoryId\": \"Grönsaker\"},\n    {\"name\": \"Aubergine\", \"description\": \"En lila grönsak som är populär i många rätter.\", \"price\": 20, \"categoryId\": \"Grönsaker\"},\n    {\"name\": \"Äpple\", \"description\": \"En mångsidig frukt som finns i olika sorter och smaker.\", \"price\": 15, \"categoryId\": \"Frukter\"},\n    {\"name\": \"Kiwi\", \"description\": \"Grön frukt med hög C-Vitamininnehåll.\", \"price\": 20, \"categoryId\": \"Frukter\"}\n]",
+			"type": "string",
+			"disabled": true
+		},
+		{
+			"key": "comments",
+			"value": "[\n    {\"comment\": \"Mycket god champagne!\", \"productId\": \"Champagne\", \"userId\": 3},\n    {\"comment\": \"Fantastisk rysk kaviar!\", \"productId\": \"Rysk kaviar\", \"userId\": 4},\n    {\"comment\": \"Dessa tomater är otroligt saftiga!\", \"productId\": \"Tomat\", \"userId\": 5}\n]",
+			"type": "string",
+			"disabled": true
+		},
+		{
+			"key": "counter",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
