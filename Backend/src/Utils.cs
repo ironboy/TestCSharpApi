@@ -40,6 +40,7 @@ public static class Utils
                 comment, pattern, replaceWith, RegexOptions.IgnoreCase);
         });
         return comment[1..];
+
     }
 
     public static Arr CreateMockUsers()
@@ -48,6 +49,7 @@ public static class Utils
         foreach (var user in mockUsers)
         {
             // user.password = "12345678";
+
             var result = SQLQueryOne(
                 @"INSERT INTO users(firstName,lastName,email,password)
                 VALUES($firstName, $lastName, $email, $password)
@@ -63,7 +65,4 @@ public static class Utils
         }
         return successFullyWrittenUsers;
     }
-
-    // Now write the two last ones yourself!
-    // See: https://sys23m-jensen.lms.nodehill.se/uploads/videos/2021-05-18T15-38-54/sysa-23-presentation-2024-05-02-updated.html#8
 }
