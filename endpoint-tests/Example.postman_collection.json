@@ -630,7 +630,7 @@
 							"    testData.counter = 0;",
 							"    pm.collectionVariables.set(\"testData\",testData);",
 							"}"
-						],
+						], 
 						"type": "text/javascript",
 						"packages": {}
 					}
