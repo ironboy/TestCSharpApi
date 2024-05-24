@@ -1,11 +1,22 @@
+using FracturedJson.Parsing;
+using Xunit;
 namespace WebApp;
-
-public class UtilsTest(Xlog Console)
+public class UtilsTest
 {
-    // Read all mock users from file
     private static readonly Arr mockUsers = JSON.Parse(
         File.ReadAllText(FilePath("json", "mock-users.json"))
+        );
+    private static readonly Arr mockDomains = JSON.Parse(
+        File.ReadAllText(FilePath("json", "mock-domains.json"))
     );
+
+
+   [Fact]
+    public void TestSumInt()
+    {
+        Assert.Equal(12, Utils.SumInts(7, 5));
+        Assert.Equal(-3, Utils.SumInts(6, -9));
+    }
 
     [Theory]
     [InlineData("abC9#fgh", true)]  // ok
@@ -17,18 +28,6 @@ public class UtilsTest(Xlog Console)
     public void TestIsPasswordGoodEnough(string password, bool expected)
     {
         Assert.Equal(expected, Utils.IsPasswordGoodEnough(password));
-    }
-
-    [Theory]
-    [InlineData("abC9#fgh", true)]  // ok
-    [InlineData("stU5/xyz", true)]  // ok too
-    [InlineData("abC9#fg", false)]  // too short
-    [InlineData("abCd#fgh", false)] // no digit
-    [InlineData("abc9#fgh", false)] // no capital letter
-    [InlineData("abC9efgh", false)] // no special character
-    public void TestIsPasswordGoodEnoughRegexVersion(string password, bool expected)
-    {
-        Assert.Equal(expected, Utils.IsPasswordGoodEnoughRegexVersion(password));
     }
 
     [Theory]
@@ -73,6 +72,52 @@ public class UtilsTest(Xlog Console)
         Console.WriteLine("The test passed!");
     }
 
-    // Now write the two last ones yourself!
-    // See: https://sys23m-jensen.lms.nodehill.se/uploads/videos/2021-05-18T15-38-54/sysa-23-presentation-2024-05-02-updated.html#8
+    [Fact]
+    public void TestRemoveMockUsers()
+    {
+        Arr mockUsersFromDb = SQLQuery("SELECT * FROM users");
+        Arr mockUsersShouldBeDeleted = Arr();
+
+        foreach(var user in mockUsersFromDb)
+        {
+            foreach(var mock in mockUsers)
+            if (mock.email == user.email)
+            {
+                user.Delete("password");
+                mockUsersShouldBeDeleted.Push(mock);
+            }
+        }
+
+        Arr deletedUsers = Utils.RemoveMockUsers();
+
+        Console.WriteLine($"The amount of users found in {mockUsersShouldBeDeleted.Length} should");
+        Console.WriteLine($"be same as the ones in {deletedUsers.Length}");
+        Console.WriteLine($"The test also asserts that these two Arrs are the same");
+        Assert.Equivalent(deletedUsers, mockUsersShouldBeDeleted);
+    }
+
+    [Fact]
+    public void TestCountDomainsFromUserEmails()
+    {
+
+        Arr countDomainsUsingQuery = SQLQuery(@"SELECT 
+        SUBSTR(email, INSTR(email, '@') + 1) AS domain, 
+        COUNT(*) AS domain_count
+        FROM users
+        GROUP BY domain
+        ORDER BY domain_count DESC;");
+
+        Obj countDomainsFromQuery = Obj();
+
+        foreach(var row in countDomainsUsingQuery)
+        {
+            countDomainsFromQuery[row.domain] = row.domain_count;
+        }
+
+        Obj countDomainsMethod = Utils.CountDomainsFromUserEmails();
+
+        Console.WriteLine($"The number of mock domains"); 
+        Assert.Equivalent(countDomainsMethod, countDomainsFromQuery); 
+
+    }
 }

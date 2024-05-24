@@ -3,7 +3,7 @@ public static class Shared
 {
     // A global object to store settings in
     private static Obj _globals = Obj();
-
+ 
     public static dynamic Globals
     {
         get { return _globals; }
