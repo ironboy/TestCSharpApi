@@ -11,7 +11,4 @@ Globals = Obj(new
     sessionLifeTimeHours = 2
 });
 
-//Server.Start();
-
-UtilsTest a = new();
-a.TestRemoveBadWords();
+Server.Start();
