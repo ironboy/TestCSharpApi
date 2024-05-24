@@ -12,6 +12,7 @@ public static class Utils
     private static readonly Arr badWords = ((Arr)JSON.Parse(
         File.ReadAllText(FilePath("json", "bad-words.json"))
     )).Sort((a, b) => ((string)b).Length - ((string)a).Length);
+
     public static int SumInts(int a, int b)
     {
         return a + b;
