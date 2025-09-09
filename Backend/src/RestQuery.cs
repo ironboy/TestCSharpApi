@@ -1,4 +1,5 @@
-using WebApp;
+namespace WebApp;
+
 public static class RestQuery
 {
     public static dynamic Parse(IQueryCollection query)
